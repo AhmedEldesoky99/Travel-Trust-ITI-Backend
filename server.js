@@ -6,17 +6,16 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
 
-//parsing
-const bodyParser = require("body-parser");
-
 //custom modules
 const authRouter = require("./routers/auth/user");
 const userRouter = require("./routers/user/user");
 const tourRouter = require("./routers/tour/tour");
+const historyRouter = require("./routers/history");
 const commentsRouter = require("./routers/comment/comment");
 const bookingRouter = require("./routers/booking/booking");
 const cartRouter = require("./routers/cart/cart");
 const favoritesRouter = require("./routers/favorite/favorite");
+const categoryRouter = require("./routers/category/category");
 
 const { errorHandler } = require("./utils/responseHandler");
 const { webhookCheckout } = require("./middlewares/webhook/webhook");
@@ -47,6 +46,8 @@ app.use(express.static(path.join(__dirname, "uploads")));
 // morgan
 app.use(morgan("dev"));
 // routes
+app.use("/v1/history", historyRouter);
+app.use("/v1/categories", categoryRouter);
 app.use("/v1/users", authRouter);
 app.use("/v1/tours", tourRouter);
 app.use("/v1/user/profile", userRouter);

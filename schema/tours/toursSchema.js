@@ -1,16 +1,19 @@
 // core module
 const mongoose = require("mongoose");
-const { post } = require("../user/userSchema");
 
 const { Schema } = mongoose;
 
 const tourSchema = new Schema(
   {
-    title: String,
     organizer: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+    },
+    title: String,
     photos: {
       type: Array,
     },
