@@ -8,6 +8,7 @@ const CartSchema = require("../schema/cart/cartSchema");
 const CategorySchema = require("../schema/category");
 const HistorySchema = require("../schema/history");
 const CitiesSchema = require("../schema/cities");
+const DestinationsSchema = require("../schema/destinations");
 
 //app models
 const userModel = mongoose.model("User", userSchema);
@@ -17,6 +18,7 @@ const CartModel = mongoose.model("Cart", CartSchema);
 const CategoryModel = mongoose.model("Category", CategorySchema);
 const HistoryModal = mongoose.model("History", HistorySchema);
 const CitiesModal = mongoose.model("City", CitiesSchema);
+const DestinationsModal = mongoose.model("Destination", DestinationsSchema);
 
 module.exports = {
   userModel,
@@ -26,4 +28,5 @@ module.exports = {
   CategoryModel,
   HistoryModal,
   CitiesModal,
+  DestinationsModal,
 };

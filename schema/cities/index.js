@@ -9,6 +9,7 @@ const CitiesSchema = new Schema(
     home_image: String,
     full_image: String,
     section_image: String,
+    tours_number: Number,
   },
   { timestamps: true },
   {

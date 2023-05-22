@@ -1,0 +1,14 @@
+[
+  {
+    "greater_cairo_region": [
+      "6468ae3e6e21dc142391fe7d",
+      "6468ae3e6e21dc142391fe7b"
+    ],
+    "alexandria_region": ["6468ae3e6e21dc142391fe78"],
+    "delta_region": [],
+    "suez_canal_region": ["6468ae3e6e21dc142391fe79"],
+    "north_upper_region": ["6468ae3e6e21dc142391fe7a"],
+    "central_upper_region": [],
+    "southern_upper_region": ["6468ae3e6e21dc142391fe7c"]
+  }
+]

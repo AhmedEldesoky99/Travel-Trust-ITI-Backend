@@ -6,6 +6,9 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
 
+const { errorHandler } = require("./utils/responseHandler");
+const { webhookCheckout } = require("./middlewares/webhook/webhook");
+
 //custom modules
 const authRouter = require("./routers/auth/user");
 const userRouter = require("./routers/user/user");
@@ -17,9 +20,7 @@ const cartRouter = require("./routers/cart/cart");
 const favoritesRouter = require("./routers/favorite/favorite");
 const categoryRouter = require("./routers/category/category");
 const citiesRouter = require("./routers/cities");
-
-const { errorHandler } = require("./utils/responseHandler");
-const { webhookCheckout } = require("./middlewares/webhook/webhook");
+const destinationRouter = require("./routers/destination");
 
 //handle dotenv
 dotenv.config();
@@ -47,6 +48,7 @@ app.use(express.static(path.join(__dirname, "uploads")));
 // morgan
 app.use(morgan("dev"));
 // routes
+app.use("/v1/destinations", destinationRouter);
 app.use("/v1/cities", citiesRouter);
 app.use("/v1/history", historyRouter);
 app.use("/v1/categories", categoryRouter);
