@@ -1,49 +1,53 @@
+const { uploadCloud } = require("../../middlewares/cloudinary/cloudinary");
 const {
-  cloudUploadImages,
-} = require("../../middlewares/cloudinary/cloudinary");
-const { tourModel, userModel } = require("../../models");
+  tourModel: Tour,
+  CitiesModal: City,
+  CategoryModel: Category,
+} = require("../../models/index");
 const { errorHandler, successHandler } = require("../../utils/responseHandler");
-const { imageMapping, stringToArray } = require("../../utils/utils");
-const { isAdmin } = require("../auth/auth");
 
 exports.updateTour = async (req, res, next) => {
   try {
-    let { expected_photos, photos } = req.files;
     const { id } = req.params;
 
-    const getTour = await tourModel.findById(id).populate("organizer");
+    const getTour = await Tour.findById(id).populate("organizer");
     if (!getTour) {
       throw errorHandler("invalid tour id", 404);
     }
 
-    await isAdmin(req.userID);
     if (getTour.organizer.id !== req.userID) {
       throw errorHandler("unauthorized", 401);
     }
+    const city = await City.findById(req.body.city);
+    if (!city) {
+      throw errorHandler("city id is invalid", 400);
+    }
+    const category = await Category.findById(req.body.category);
+    if (!category) {
+      throw errorHandler("category id is invalid", 400);
+    }
 
-    if (photos) {
-      photos = await cloudUploadImages(photos);
-    }
-    if (expected_photos) {
-      expected_photos = await cloudUploadImages(expected_photos);
-    }
-    const handleData = {
-      ...getTour,
-      photos,
-      expected_photos,
-      reasons: req.body.reasons,
-      plan: {
-        meeting_point: req.body.meeting_point,
-        city_highlights: req.body.city_highlights,
-        hidden_gems: req.body.hidden_gems,
-        magical_storytelling: req.body.magical_storytelling,
-        special_treat: req.body.special_treat,
-      },
+    await Promise.all(
+      req.files.map(async (item) => {
+        const uploadedFile = await uploadCloud(item.file);
+
+        req.body[item.name] = [{ ...uploadedFile }];
+
+        //check if plan image
+        const isPlanImage = isFinite(item.name[5]);
+        if (isPlanImage)
+          req.body.plan[item.name[5]].image = [{ ...uploadedFile }];
+      })
+    );
+
+    const tour = {
+      organizer: req.userID,
+      ...req.body,
     };
 
-    const tour = await tourModel.findByIdAndUpdate(id, handleData);
+    const updatedTour = await Tour.findByIdAndUpdate(id, { ...tour });
 
-    successHandler(res, tour, "tour updated successfully");
+    successHandler(res, updatedTour, "tour updated successfully");
   } catch (err) {
     next(err);
   }

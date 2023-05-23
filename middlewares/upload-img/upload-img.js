@@ -57,6 +57,6 @@ exports.uploadMultiImages = (arrayOfFields, edit = false) => {
   return upload.fields(arrayOfFields);
 };
 
-exports.uploadAnyFiles = (files) => {
-  return upload.any(files);
+exports.uploadAnyFiles = () => {
+  return upload.any();
 };

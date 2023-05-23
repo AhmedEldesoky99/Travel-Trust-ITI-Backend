@@ -23,22 +23,16 @@ tourRouter.post(
   "/",
   protect,
   uploadAnyFiles(),
-  // validTour,
   resizeTourImage,
+  validTour,
   createTour
 );
-tourRouter.put(
+tourRouter.patch(
   "/:id",
   protect,
-  uploadMultiImages(
-    [
-      { name: "highlight_photos", maxCount: 4 },
-      { name: "food_photos", maxCount: 4 },
-    ],
-    true
-  ),
-  validTour,
+  uploadAnyFiles(),
   resizeTourImage,
+  validTour,
   updateTour
 );
 
