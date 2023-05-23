@@ -9,23 +9,59 @@ const tourSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    category: {
+    category: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
+    city: {
       type: Schema.Types.ObjectId,
-      ref: "Category",
+      ref: "City",
     },
-    title: String,
-    photos: {
-      type: Array,
+    title: { type: String, trim: true },
+    price_per_person: {
+      type: Number,
+      get: (value) => (value / 100).toFixed(2),
+      set: (value) => value * 100,
     },
-    expected_photos: { type: Array },
-    start_date: Date,
-    duration: Number,
-    person_cost: Number,
     person_num: {
       type: Number,
     },
+    duration: Number,
+
+    description: { type: String, trim: true },
+    start_date: Date,
+    end_date: Date,
+    dress_code: { type: String, trim: true },
+    include: {
+      type: Array,
+    },
+
+    plan: [
+      {
+        title: { type: String, trim: true },
+        start_date: Date,
+        end_date: Date,
+        stop_location: { type: String, trim: true },
+        duration: Date,
+        image: Array,
+      },
+    ],
+
+    food_photos: {
+      type: Array,
+    },
+    highlight_photos: { type: Array },
+
+    meeting_point: { type: String, trim: true },
+    pubish: {
+      type: Boolean,
+      default: true,
+    },
     status: {
       type: String,
+      trim: true,
       enum: {
         values: ["complete", "incomplete"],
         message: ["difficulty is either : complete, incomplete"],
@@ -33,38 +69,10 @@ const tourSchema = new Schema(
       default: "incomplete",
     },
     reservation_number: Number,
-    location: {
-      type: String,
-    },
-    private: {
-      type: Boolean,
-    },
-    food: {
-      type: Boolean,
-    },
-    walk: {
-      type: Boolean,
-    },
-    carbon_neut: {
-      type: Boolean,
-    },
-    include: {
-      type: String,
-    },
-    reasons: {
-      type: Array,
-    },
-    plan: {
-      meeting_point: String,
-      city_highlights: String,
-      hidden_gems: String,
-      magical_storytelling: String,
-      special_treat: String,
-    },
   },
   { timestamps: true },
   {
-    toJSON: { virtuals: true },
+    toJSON: { virtuals: true, getters: true },
     toObject: { virtuals: true },
   }
 );

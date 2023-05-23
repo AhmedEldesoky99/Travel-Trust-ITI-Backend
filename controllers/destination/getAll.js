@@ -3,7 +3,7 @@ const { successHandler } = require("../../utils/responseHandler");
 
 exports.getAllDestinations = async (req, res, next) => {
   try {
-    const destinations = await Destination.find()
+    const destinations = await Destination.find({}, { _id: 0 })
       .populate("greater_cairo_region")
       .populate("alexandria_region")
       .populate("delta_region")

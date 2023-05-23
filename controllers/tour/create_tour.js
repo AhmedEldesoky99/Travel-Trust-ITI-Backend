@@ -1,45 +1,44 @@
+const { uploadCloud } = require("../../middlewares/cloudinary/cloudinary");
 const {
-  cloudUploadImages,
-} = require("../../middlewares/cloudinary/cloudinary");
-const { tourModel } = require("../../models/index");
+  tourModel: Tour,
+  CitiesModal: City,
+  CategoryModel: Category,
+} = require("../../models/index");
 const { errorHandler, successHandler } = require("../../utils/responseHandler");
-const { imageMapping, stringToArray } = require("../../utils/utils");
 const { isAdmin } = require("../auth/auth");
 
 exports.createTour = async (req, res, next) => {
   try {
-    let { expected_photos, photos } = req.files;
-
     await isAdmin(req.userID);
 
-    if (!photos) {
-      throw errorHandler("photos is required", 400);
+    const city = await City.findById(req.body.city);
+    if (!city) {
+      throw errorHandler("city id is invalid", 400);
+    }
+    const category = await Category.findById(req.body.category);
+    if (!category) {
+      throw errorHandler("category id is invalid", 400);
     }
 
-    if (!expected_photos) {
-      throw errorHandler("expected photos is required", 400);
-    }
+    await Promise.all(
+      req.files.map(async (item) => {
+        const uploadedFile = await uploadCloud(item.file);
 
-    photos = await cloudUploadImages(photos);
-    expected_photos = await cloudUploadImages(expected_photos);
+        req.body[item.name] = [{ ...uploadedFile }];
 
-    const handleData = {
-      ...req.body,
-      photos,
-      expected_photos,
+        //check if plan image
+        const isPlanImage = isFinite(item.name[5]);
+        if (isPlanImage)
+          req.body.plan[item.name[5]].image = [{ ...uploadedFile }];
+      })
+    );
+
+    const tour = new Tour({
       organizer: req.userID,
-      reasons: req.body.reasons,
-      plan: {
-        meeting_point: req.body.meeting_point,
-        city_highlights: req.body.city_highlights,
-        hidden_gems: req.body.hidden_gems,
-        magical_storytelling: req.body.magical_storytelling,
-        special_treat: req.body.special_treat,
-      },
-    };
-
-    const tour = await tourModel.create(handleData);
-    successHandler(res, tour, "tour created successfully");
+      ...req.body,
+    });
+    const createdTour = await Tour.create(tour);
+    successHandler(res, createdTour, "tour created successfully");
   } catch (err) {
     next(err);
   }

@@ -12,19 +12,18 @@ const { updateTour } = require("../../controllers/tour/update_tour");
 const {
   uploadMultiImages,
   resizeTourImage,
+  uploadAnyFiles,
 } = require("../../middlewares/upload-img/upload-img");
 const { validTour } = require("../../validation/tour");
+const { getCityTours } = require("../../controllers/tour/getCityTours");
 
 const tourRouter = express.Router();
 
 tourRouter.post(
   "/",
   protect,
-  uploadMultiImages([
-    { name: "photos", maxCount: 4 },
-    { name: "expected_photos", maxCount: 4 },
-  ]),
-  validTour,
+  uploadAnyFiles(),
+  // validTour,
   resizeTourImage,
   createTour
 );
@@ -33,8 +32,8 @@ tourRouter.put(
   protect,
   uploadMultiImages(
     [
-      { name: "photos", maxCount: 4 },
-      { name: "expected_photos", maxCount: 4 },
+      { name: "highlight_photos", maxCount: 4 },
+      { name: "food_photos", maxCount: 4 },
     ],
     true
   ),
@@ -47,5 +46,6 @@ tourRouter.delete("/:id", protect, deleteOneTour);
 tourRouter.get("/:id", getOneTour);
 tourRouter.get("/", getAllTours);
 tourRouter.get("/organizer/:organizerID", getAdminTours);
+tourRouter.get("/city/:cityID", getCityTours);
 
 module.exports = tourRouter;

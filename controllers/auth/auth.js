@@ -49,7 +49,7 @@ const protect = async (req, res, next) => {
     req.user = validUser;
     next();
   } catch (err) {
-    next(errorHandler(err.message ?? "unauthorized", 401));
+    next(errorHandler("unauthorized", 401));
   }
 };
 const isAdmin = async (id) => {
