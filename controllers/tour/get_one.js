@@ -8,7 +8,10 @@ const { calcRate } = require("./helper");
 
 exports.getOneTour = async (req, res, next) => {
   try {
-    const tour = await Tour.findById(req.params.id).populate("organizer");
+    const tour = await Tour.findById(req.params.id)
+      .populate("organizer")
+      .populate("city")
+      .populate("category");
 
     if (!tour) {
       throw errorHandler("tour not found", 404);
