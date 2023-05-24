@@ -1,7 +1,7 @@
 const joi = require("joi");
 const { errorHandler } = require("../utils/responseHandler");
 
-const tourSchema = joi.object({
+const validationObj = {
   title: joi.string().required(),
   city: joi.string().required(),
   category: joi.string().required(),
@@ -25,6 +25,13 @@ const tourSchema = joi.object({
       duration: joi.number().required(),
     })
   ),
+};
+
+const createTourSchema = joi.object(validationObj);
+const updateTourSchema = joi.object({
+  ...validationObj,
+  highlight_photos: joi.string(),
+  sale: joi.number(),
 });
 
 const findItemInObj = (itemName, arr) => {
@@ -32,9 +39,20 @@ const findItemInObj = (itemName, arr) => {
   return item?.file;
 };
 
-const validTour = async (req, res, next) => {
+const createValidTour = async (req, res, next) => {
   try {
-    await tourSchema.validateAsync({
+    await createTourSchema.validateAsync({
+      ...req.body,
+      highlight_photos: findItemInObj("highlight_photos", req.files),
+    });
+    next();
+  } catch (err) {
+    next(errorHandler(err.details.map((err) => err.message)), 400);
+  }
+};
+const updateValidTour = async (req, res, next) => {
+  try {
+    await updateTourSchema.validateAsync({
       ...req.body,
       highlight_photos: findItemInObj("highlight_photos", req.files),
     });
@@ -44,4 +62,4 @@ const validTour = async (req, res, next) => {
   }
 };
 
-module.exports = { validTour };
+module.exports = { createValidTour, updateValidTour };

@@ -11,6 +11,7 @@ exports.updateTour = async (req, res, next) => {
     const { id } = req.params;
 
     const getTour = await Tour.findById(id).populate("organizer");
+
     if (!getTour) {
       throw errorHandler("invalid tour id", 404);
     }
@@ -28,7 +29,7 @@ exports.updateTour = async (req, res, next) => {
     }
 
     await Promise.all(
-      req.files.map(async (item) => {
+      req.files?.map(async (item) => {
         const uploadedFile = await uploadCloud(item.file);
 
         req.body[item.name] = [{ ...uploadedFile }];
@@ -45,9 +46,9 @@ exports.updateTour = async (req, res, next) => {
       ...req.body,
     };
 
-    const updatedTour = await Tour.findByIdAndUpdate(id, { ...tour });
+    await Tour.updateOne({ id }, { ...tour });
 
-    successHandler(res, updatedTour, "tour updated successfully");
+    next();
   } catch (err) {
     next(err);
   }

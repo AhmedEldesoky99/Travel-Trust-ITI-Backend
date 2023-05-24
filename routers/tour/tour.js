@@ -14,8 +14,9 @@ const {
   resizeTourImage,
   uploadAnyFiles,
 } = require("../../middlewares/upload-img/upload-img");
-const { validTour } = require("../../validation/tour");
+const { createValidTour, updateValidTour } = require("../../validation/tour");
 const { getCityTours } = require("../../controllers/tour/getCityTours");
+const { getToursOnSale } = require("../../controllers/tour/getToursOnSale");
 
 const tourRouter = express.Router();
 
@@ -24,7 +25,7 @@ tourRouter.post(
   protect,
   uploadAnyFiles(),
   resizeTourImage,
-  validTour,
+  createValidTour,
   createTour
 );
 tourRouter.patch(
@@ -32,13 +33,16 @@ tourRouter.patch(
   protect,
   uploadAnyFiles(),
   resizeTourImage,
-  validTour,
-  updateTour
+  updateValidTour,
+  updateTour,
+  getOneTour
 );
 
 tourRouter.delete("/:id", protect, deleteOneTour);
-tourRouter.get("/:id", getOneTour);
+
 tourRouter.get("/", getAllTours);
+tourRouter.get("/sales", getToursOnSale);
+tourRouter.get("/:id", getOneTour);
 tourRouter.get("/organizer/:organizerID", getAdminTours);
 tourRouter.get("/city/:cityID", getCityTours);
 

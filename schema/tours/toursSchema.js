@@ -1,4 +1,5 @@
 // core module
+const { number } = require("joi");
 const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
@@ -67,6 +68,10 @@ const tourSchema = new Schema(
         message: ["difficulty is either : complete, incomplete"],
       },
       default: "incomplete",
+    },
+    sale: {
+      type: Number,
+      default: 0,
     },
     reservation_number: Number,
   },
