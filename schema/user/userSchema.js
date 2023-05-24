@@ -22,7 +22,7 @@ const userSchema = new Schema(
       trim: true,
       select: false,
     },
-    ssn: { type: String, trim: true },
+    ssn: { type: String, trim: true, unique: true },
     photo: {
       type: Array,
       default: null,
