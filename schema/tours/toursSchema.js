@@ -55,7 +55,10 @@ const tourSchema = new Schema(
     },
     highlight_photos: { type: Array },
 
-    meeting_point: { type: String, trim: true },
+    meeting_point: {
+      longitude: { type: Number, trim: true },
+      latitude: { type: Number, trim: true },
+    },
     pubish: {
       type: Boolean,
       default: true,
