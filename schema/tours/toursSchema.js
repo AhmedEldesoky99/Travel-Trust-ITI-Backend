@@ -1,5 +1,5 @@
 // core module
-const { number } = require("joi");
+const { number, string } = require("joi");
 const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
@@ -42,10 +42,10 @@ const tourSchema = new Schema(
     plan: [
       {
         title: { type: String, trim: true },
-        start_date: Date,
-        end_date: Date,
-        stop_location: { type: String, trim: true },
-        duration: Date,
+        start_time: String,
+        end_time: String,
+        stop_location: [{ type: String, trim: true }],
+        duration: [String],
         image: Array,
       },
     ],
