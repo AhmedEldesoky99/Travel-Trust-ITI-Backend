@@ -19,8 +19,8 @@ const validationObj = {
   plan: joi.array().items(
     joi.object().keys({
       title: joi.string().required(),
-      start_date: joi.date().required(),
-      end_date: joi.date().required(),
+      start_time: Joi.string().regex(/^([0-9]{2})\:([0-9]{2})$/),
+      end_time: Joi.string().regex(/^([0-9]{2})\:([0-9]{2})$/),
       stop_location: joi.string().required(),
       duration: joi.number().required(),
     })
