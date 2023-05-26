@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
+const autoIncrement = require("mongoose-auto-increment");
+
 const userSchema = new Schema(
   {
     username: { type: String, trim: true },
@@ -53,4 +55,7 @@ const userSchema = new Schema(
     toObject: { virtual: true },
   }
 );
+
+userSchema.plugin(autoIncrement.plugin, "User");
+
 module.exports = userSchema;

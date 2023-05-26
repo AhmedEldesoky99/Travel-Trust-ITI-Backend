@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-
 const { Schema } = mongoose;
+const autoIncrement = require("mongoose-auto-increment");
 
 const CartSchema = new Schema(
   {
@@ -26,5 +26,5 @@ const CartSchema = new Schema(
   },
   { timestamps: true }
 );
-
+CartSchema.plugin(autoIncrement.plugin, "Cart");
 module.exports = CartSchema;

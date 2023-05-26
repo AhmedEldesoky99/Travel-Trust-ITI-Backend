@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-
 const { Schema } = mongoose;
-
+const autoIncrement = require("mongoose-auto-increment");
 const HistorySchema = new Schema(
   {
     user: {
@@ -17,4 +16,5 @@ const HistorySchema = new Schema(
   }
 );
 
+HistorySchema.plugin(autoIncrement.plugin, "History");
 module.exports = HistorySchema;

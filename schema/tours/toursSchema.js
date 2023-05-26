@@ -1,6 +1,7 @@
 // core module
 const { number, string } = require("joi");
 const mongoose = require("mongoose");
+const autoIncrement = require("mongoose-auto-increment");
 
 const { Schema } = mongoose;
 
@@ -85,4 +86,5 @@ const tourSchema = new Schema(
   }
 );
 
+tourSchema.plugin(autoIncrement.plugin, "Tour");
 module.exports = tourSchema;

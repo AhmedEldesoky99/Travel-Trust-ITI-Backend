@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-
 const { Schema } = mongoose;
+const autoIncrement = require("mongoose-auto-increment");
 
 const CitiesSchema = new Schema(
   {
@@ -17,5 +17,5 @@ const CitiesSchema = new Schema(
     toObject: { virtuals: true },
   }
 );
-
+CitiesSchema.plugin(autoIncrement.plugin, "City");
 module.exports = CitiesSchema;

@@ -8,8 +8,10 @@ const path = require("path");
 
 const { errorHandler } = require("./utils/responseHandler");
 const { webhookCheckout } = require("./middlewares/webhook/webhook");
+const { trainModel } = require("./ML/train-model");
 
 //custom modules
+const RecommendTours = require("./routers/RecommendTours");
 const authRouter = require("./routers/auth/user");
 const userRouter = require("./routers/user/user");
 const tourRouter = require("./routers/tour/tour");
@@ -48,6 +50,7 @@ app.use(express.static(path.join(__dirname, "uploads")));
 // morgan
 app.use(morgan("dev"));
 // routes
+app.use("/v1/recommendations", RecommendTours);
 app.use("/v1/destinations", destinationRouter);
 app.use("/v1/cities", citiesRouter);
 app.use("/v1/history", historyRouter);
@@ -59,6 +62,9 @@ app.use("/v1/comments", commentsRouter);
 app.use("/v1/cart", cartRouter);
 app.use("/v1/favorites", favoritesRouter);
 app.use("/v1", bookingRouter);
+
+//ml
+trainModel.start();
 
 // route not exist
 app.all("*", (req, res, next) => {

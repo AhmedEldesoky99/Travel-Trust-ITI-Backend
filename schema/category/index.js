@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-
 const { Schema } = mongoose;
+const autoIncrement = require("mongoose-auto-increment");
 
 const CategorySchema = new Schema(
   {
@@ -12,5 +12,5 @@ const CategorySchema = new Schema(
     toObject: { virtuals: true },
   }
 );
-
+CategorySchema.plugin(autoIncrement.plugin, "Category");
 module.exports = CategorySchema;

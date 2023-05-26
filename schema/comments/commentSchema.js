@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-
 const { Schema } = mongoose;
+const autoIncrement = require("mongoose-auto-increment");
 
 const commentSchema = new Schema(
   {
@@ -28,4 +28,6 @@ const commentSchema = new Schema(
     toObject: { virtual: true },
   }
 );
+
+commentSchema.plugin(autoIncrement.plugin, "Comment");
 module.exports = commentSchema;

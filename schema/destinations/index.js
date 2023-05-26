@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-
 const { Schema } = mongoose;
+const autoIncrement = require("mongoose-auto-increment");
 
 const DestinationsSchema = new Schema(
   {
@@ -18,4 +18,5 @@ const DestinationsSchema = new Schema(
   }
 );
 
+DestinationsSchema.plugin(autoIncrement.plugin, "Destination");
 module.exports = DestinationsSchema;
