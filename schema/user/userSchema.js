@@ -10,7 +10,7 @@ const userSchema = new Schema(
     username: { type: String, trim: true },
     phone: { type: String, trim: true },
     cart: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: "Cart",
     },
     email: {
@@ -36,7 +36,7 @@ const userSchema = new Schema(
     visited_tours: Array,
     favorite_tours: [
       {
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: "Tour",
       },
     ],

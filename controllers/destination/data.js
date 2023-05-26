@@ -1,0 +1,11 @@
+exports.destinationsArr = [
+  {
+    greater_cairo_region: [4, 6],
+    alexandria_region: [1],
+    delta_region: [],
+    suez_canal_region: [2],
+    north_upper_region: [],
+    central_upper_region: [3],
+    southern_upper_region: [5],
+  },
+];

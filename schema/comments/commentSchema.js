@@ -11,12 +11,12 @@ const commentSchema = new Schema(
       default: 0,
     },
     user: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: "User",
       require: true,
     },
     tour: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: "Tour",
       require: true,
     },

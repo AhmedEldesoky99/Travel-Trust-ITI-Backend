@@ -50,8 +50,8 @@ app.use(express.static(path.join(__dirname, "uploads")));
 // morgan
 app.use(morgan("dev"));
 // routes
-app.use("/v1/recommendations", RecommendTours);
 app.use("/v1/destinations", destinationRouter);
+app.use("/v1/recommendations", RecommendTours);
 app.use("/v1/cities", citiesRouter);
 app.use("/v1/history", historyRouter);
 app.use("/v1/categories", categoryRouter);

@@ -5,12 +5,12 @@ const autoIncrement = require("mongoose-auto-increment");
 const CartSchema = new Schema(
   {
     user: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: "User",
     },
     tours: [
       {
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: "Tour",
       },
     ],

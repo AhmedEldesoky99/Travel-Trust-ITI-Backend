@@ -8,17 +8,17 @@ const { Schema } = mongoose;
 const tourSchema = new Schema(
   {
     organizer: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: "User",
     },
     category: [
       {
-        type: Schema.Types.ObjectId,
+        type: Number,
         ref: "Category",
       },
     ],
     city: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: "City",
     },
     title: { type: String, trim: true },

@@ -1,9 +1,12 @@
 const { DestinationsModal: Destination } = require("../../models/index");
 const { successHandler } = require("../../utils/responseHandler");
+const { destinationsArr } = require("./data");
 
 exports.getAllDestinations = async (req, res, next) => {
   try {
-    const destinations = await Destination.find({}, { _id: 0 })
+    //insert data
+    //  await Destination.insertMany(destinationsArr);
+    const destinations = await Destination.find()
       .populate("greater_cairo_region")
       .populate("alexandria_region")
       .populate("delta_region")

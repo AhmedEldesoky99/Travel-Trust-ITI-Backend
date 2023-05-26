@@ -4,10 +4,10 @@ const autoIncrement = require("mongoose-auto-increment");
 const HistorySchema = new Schema(
   {
     user: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: "User",
     },
-    tours: [{ type: Schema.Types.ObjectId, ref: "Tour" }],
+    tours: [{ type: Number, ref: "Tour" }],
   },
   { timestamps: true },
   {
