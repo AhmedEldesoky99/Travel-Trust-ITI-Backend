@@ -2,21 +2,13 @@ const cron = require("node-cron");
 const axios = require("axios");
 const { HistoryModal: History } = require("../../models");
 
-exports.trainModel = cron.schedule("* * 1,8,18,24,29 * *", async () => {
+exports.trainModel = cron.schedule("0 0 * * 0", async () => {
   try {
     await TrainModel();
   } catch (err) {
     console.log("schedule err", err);
   }
 });
-
-// exports.trainModel = cron.schedule("* * * * *", async () => {
-//   try {
-//     await TrainModel();
-//   } catch (err) {
-//     console.log("schedule err", err);
-//   }
-// });
 
 const TestMLPing = async () => {
   try {
@@ -43,7 +35,7 @@ const PrepareUsersHistoryToML = (history) => {
       }))
     );
   });
-  console.log(result);
+  console.log(result, "training data");
   return result;
 };
 

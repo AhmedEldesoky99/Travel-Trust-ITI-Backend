@@ -12,7 +12,7 @@ function errorHandler(error = "Something went wrong", status = 500) {
 // function to handle success
 function successHandler(
   res,
-  data = [],
+  data = undefined,
   length = undefined,
   message = "Data retrieved successfully",
   status = 200

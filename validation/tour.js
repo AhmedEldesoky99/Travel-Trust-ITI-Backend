@@ -61,7 +61,12 @@ const updateValidTour = async (req, res, next) => {
     });
     next();
   } catch (err) {
-    next(errorHandler(err.details.map((err) => err.message)), 400);
+    next(
+      errorHandler(
+        err.details.map((err) => err.message),
+        400
+      )
+    );
   }
 };
 

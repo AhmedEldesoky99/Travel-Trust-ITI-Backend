@@ -4,17 +4,26 @@ const { successHandler } = require("../../utils/responseHandler");
 
 exports.RecommendToursToUser = async (req, res, next) => {
   try {
-    const { userID, limit } = req;
+    const { userID } = req;
+    const { limit } = req.query;
+
     const tours = await Tour.find();
 
-    const items = tours.map((tour) => ({ id: tour.id, score: 0 }));
+    const items = tours.map((tour) => ({ id: +tour.id, score: 0 }));
 
-    // const result = await RecommendToursForUser({ userId, items });
-    // console.log(result);
+    const result = await RecommendToursForUser({ userId: +userID, items });
 
-    // if (result.data.code === 200) {
-    // }
-    successHandler(res, { userId: userID, items });
+    let response = [];
+
+    if (result.code === 200) {
+      response = await Promise.all(
+        result.items
+          .slice(0, +limit)
+          .map(async (item) => await Tour.findById(item.id))
+      );
+    }
+
+    successHandler(res, response, response.length);
   } catch (err) {
     next();
   }

@@ -10,9 +10,8 @@ exports.deleteOneTour = async (req, res, next) => {
     if (tour.organizer.id !== req.userID) {
       throw errorHandler("unauthorized", 401);
     }
-    console.log(tour.id, "<<<<<<<<<<<<<<");
     await Tour.findByIdAndRemove(req.params.id);
-    successHandler(res, [], "tour deleted successfully");
+    successHandler(res, undefined, undefined, "tour deleted successfully");
   } catch (err) {
     next(err);
   }
