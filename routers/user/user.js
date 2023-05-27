@@ -7,19 +7,13 @@ const { updateUser } = require("../../controllers/users/update_user");
 //image controller
 const {
   uploadMultiImages,
+  uploadAnyFiles,
+  resizeTourImage,
 } = require("../../middlewares/upload-img/upload-img");
 
 const userRouter = express.Router();
 
 userRouter.get("/:id", getOneUser);
-userRouter.patch(
-  "/",
-  uploadMultiImages([
-    { name: "photo", maxCount: 1 },
-    { name: "cover_photo", maxCount: 1 },
-  ]),
-  protect,
-  updateUser
-);
+userRouter.patch("/", uploadAnyFiles(), resizeTourImage, protect, updateUser);
 
 module.exports = userRouter;

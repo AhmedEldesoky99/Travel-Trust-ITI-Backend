@@ -32,7 +32,10 @@ const userSchema = new Schema(
     cover_photo: Array,
     role: { type: String, trim: true },
     bio: String,
-    city: String,
+    city: {
+      type: Number,
+      ref: "City",
+    },
     visited_tours: Array,
     favorite_tours: [
       {
