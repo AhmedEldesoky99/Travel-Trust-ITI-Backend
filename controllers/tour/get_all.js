@@ -5,7 +5,7 @@ exports.getAllTours = async (req, res, next) => {
   try {
     const { limit } = req.query;
 
-    const tours = await Tour.find()
+    const tours = await Tour.find({ publish: true })
       .limit(+limit)
       .populate("organizer")
       .populate("city")

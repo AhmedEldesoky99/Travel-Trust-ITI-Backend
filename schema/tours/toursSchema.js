@@ -60,7 +60,7 @@ const tourSchema = new Schema(
       longitude: { type: Number, trim: true },
       latitude: { type: Number, trim: true },
     },
-    pubish: {
+    publish: {
       type: Boolean,
       default: true,
     },

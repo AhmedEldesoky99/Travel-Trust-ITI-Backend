@@ -7,7 +7,7 @@ exports.RecommendToursToUser = async (req, res, next) => {
     const { userID } = req;
     const { limit } = req.query;
 
-    const tours = await Tour.find();
+    const tours = await Tour.find({ publish: true });
 
     const items = tours.map((tour) => ({ id: +tour.id, score: 0 }));
 

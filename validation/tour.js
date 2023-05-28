@@ -17,7 +17,7 @@ const validationObj = {
     latitude: joi.number().required(),
     longitude: joi.number().required(),
   }),
-  pubish: joi.boolean(),
+  publish: joi.boolean(),
   highlight_photos: joi.string().required(),
   plan: joi.array().items(
     joi.object().keys({
