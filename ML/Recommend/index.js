@@ -9,7 +9,7 @@ exports.RecommendToursForUser = async (tourData) => {
       url: "http://recommendersystem.somee.com/api/v2.0/Recommend/PredictMulti",
       data: tourData,
     });
-
+    console.log(data, "RecommendToursForUser");
     return data;
   } catch (err) {
     console.log("RecommendToursForUser", err);

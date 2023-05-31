@@ -2,7 +2,7 @@ const cron = require("node-cron");
 const axios = require("axios");
 const { HistoryModal: History } = require("../../models");
 
-exports.trainModel = cron.schedule("0 0 * * 0", async () => {
+exports.trainModel = cron.schedule("0 8 * * *", async () => {
   try {
     await TrainModel();
   } catch (err) {
