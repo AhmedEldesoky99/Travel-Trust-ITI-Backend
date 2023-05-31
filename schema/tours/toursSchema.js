@@ -1,5 +1,4 @@
 // core module
-const { number, string } = require("joi");
 const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-auto-increment");
 
@@ -10,22 +9,25 @@ const tourSchema = new Schema(
     organizer: {
       type: Number,
       ref: "User",
+      autopopulate: true,
     },
     category: [
       {
         type: Number,
         ref: "Category",
+        autopopulate: true,
       },
     ],
     city: {
       type: Number,
       ref: "City",
+      autopopulate: true,
     },
     title: { type: String, trim: true },
     price_per_person: {
       type: Number,
-      get: (value) => (value / 100).toFixed(2),
-      set: (value) => value * 100,
+      // get: (value) => (value / 100).toFixed(2),
+      // set: (value) => value * 100,
     },
     person_num: {
       type: Number,
@@ -73,6 +75,14 @@ const tourSchema = new Schema(
       },
       default: "incomplete",
     },
+    rate: {
+      type: Number,
+      default: 0,
+      validation: {
+        min: 0,
+        max: 5,
+      },
+    },
     sale: {
       type: Number,
       default: 0,
@@ -87,4 +97,6 @@ const tourSchema = new Schema(
 );
 
 tourSchema.plugin(autoIncrement.plugin, "Tour");
+tourSchema.plugin(require("mongoose-autopopulate"));
+
 module.exports = tourSchema;

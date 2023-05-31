@@ -1,5 +1,6 @@
-const { commentModel: Comment, tourModel } = require("../../models");
+const { commentModel: Comment, tourModel: Tour } = require("../../models");
 const { successHandler, errorHandler } = require("../../utils/responseHandler");
+const { calcRate } = require("../tour/helper");
 
 exports.deleteOneComment = async (req, res, next) => {
   try {
@@ -13,14 +14,19 @@ exports.deleteOneComment = async (req, res, next) => {
 
     if (
       comment.user.id !== req.userID &&
-      comment.tour.organizer !== req.userID
+      comment.tour.organizer.id !== req.userID
     ) {
       throw errorHandler("unauthorized", 401);
     }
 
     await Comment.findByIdAndRemove(req.params.commentID);
+    const comments = await Comment.find({ tour: comment.tour.id });
 
-    successHandler(res, comment, "comment deleted successfully");
+    await Tour.findByIdAndUpdate(comment.tour.id, {
+      rate: +calcRate(comments),
+    });
+
+    successHandler(res, undefined, undefined, "comment deleted successfully");
   } catch (err) {
     next(err);
   }
