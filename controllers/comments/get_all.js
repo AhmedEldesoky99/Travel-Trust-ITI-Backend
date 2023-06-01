@@ -3,7 +3,10 @@ const { successHandler, errorHandler } = require("../../utils/responseHandler");
 
 exports.getAllComments = async (req, res, next) => {
   try {
-    const comments = await Comment.find().populate("tour").populate("user");
+    const comments = await Comment.find()
+      .limit(+req.query.limit)
+      .populate("tour")
+      .populate("user");
 
     if (!comments) {
       throw errorHandler("Comments not found", 404);

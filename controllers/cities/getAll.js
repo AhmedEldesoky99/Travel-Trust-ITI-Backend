@@ -7,9 +7,9 @@ exports.getAllCities = async (req, res, next) => {
     //insert cities
     // await City.insertMany(citiesArr);
 
-    const cities = await City.find();
+    const cities = await City.find().limit(+req.query.limit);
 
-    successHandler(res, cities);
+    successHandler(res, cities, cities.length);
   } catch (err) {
     next(err);
   }
