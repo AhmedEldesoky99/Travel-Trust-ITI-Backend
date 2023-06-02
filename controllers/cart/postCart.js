@@ -50,6 +50,7 @@ exports.addToCart = async (req, res, next) => {
       data: newCart ? newCart : createdCart,
       message: "item added to cart successfully",
     };
+    next();
   } catch (err) {
     console.log(err);
     next(err);

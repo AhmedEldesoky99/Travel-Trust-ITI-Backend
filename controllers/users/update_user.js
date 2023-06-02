@@ -3,7 +3,7 @@ const {
   sharpHandler,
   uploadSingleImage,
 } = require("../../middlewares/upload-img/upload-img");
-const { userModel } = require("../../models/index");
+const { userModel, CitiesModal: City } = require("../../models/index");
 const { errorHandler, successHandler } = require("../../utils/responseHandler");
 
 exports.updateUser = async (req, res, next) => {
@@ -21,9 +21,18 @@ exports.updateUser = async (req, res, next) => {
       })
     );
 
-    const response = await userModel
-      .findByIdAndUpdate(req.userID, { ...req.body })
-      .populate("city");
+    await Promise.all(
+      req.body.governorate_expertise?.map(async (city, i) => {
+        const result = await City.findById(city);
+        if (!result) {
+          throw errorHandler("governorate_expertise of " + i + " is not valid");
+        }
+      })
+    );
+
+    const response = await userModel.findByIdAndUpdate(req.userID, {
+      ...req.body,
+    });
 
     successHandler(res, response, "user updated successfully");
   } catch (err) {

@@ -7,11 +7,10 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 exports.getCheckoutSession = async (req, res, next) => {
   try {
     const { cartID } = req.params;
-    const cart = await CartModel.findById(cartID)
+    const cart = await CartModel.findById(+cartID)
       .populate("user")
       .populate("tours");
 
-    console.log(cart);
     if (!cart) {
       throw errorHandler("cart id not found", 400);
     }
@@ -26,7 +25,7 @@ exports.getCheckoutSession = async (req, res, next) => {
         {
           price_data: {
             currency: "egp",
-            unit_amount: cart.total_money * 100,
+            unit_amount: cart.total_money,
             product_data: {
               name: `tours`,
               description: "welcome in Travel ",

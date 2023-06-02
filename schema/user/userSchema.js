@@ -12,7 +12,12 @@ const userSchema = new Schema(
     cart: {
       type: Number,
       ref: "Cart",
+      autopopulate: true,
     },
+    languages: {
+      type: Array,
+    },
+    governorate_expertise: [{ type: Number, ref: "City", autopopulate: true }],
     email: {
       type: String,
       trim: true,
@@ -35,12 +40,14 @@ const userSchema = new Schema(
     city: {
       type: Number,
       ref: "City",
+      autopopulate: true,
     },
     visited_tours: Array,
     favorite_tours: [
       {
         type: Number,
         ref: "Tour",
+        autopopulate: true,
       },
     ],
     cash: Number,
@@ -60,5 +67,5 @@ const userSchema = new Schema(
 );
 
 userSchema.plugin(autoIncrement.plugin, "User");
-
+userSchema.plugin(require("mongoose-autopopulate"));
 module.exports = userSchema;

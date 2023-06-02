@@ -10,7 +10,6 @@ exports.ToursStats = async (req, res, next) => {
         categories = {},
         cities = {},
         rates = {};
-      rateCounter = 1;
       data.map((tour) => {
         minPrice = data[0].price_per_person;
         maxPrice = data[0].price_per_person;
