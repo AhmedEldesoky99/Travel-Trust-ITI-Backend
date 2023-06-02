@@ -45,12 +45,11 @@ exports.addToCart = async (req, res, next) => {
       });
     }
     newCart = await CartModel.findById(cart.id);
-    successHandler(
-      res,
 
-      newCart ? newCart : createdCart,
-      "cart created successfully"
-    );
+    req.Result = {
+      data: newCart ? newCart : createdCart,
+      message: "item added to cart successfully",
+    };
   } catch (err) {
     console.log(err);
     next(err);

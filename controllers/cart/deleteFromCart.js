@@ -13,22 +13,24 @@ exports.deleteFromCart = async (req, res, next) => {
     if (!cart) {
       throw errorHandler("cart is not found", 400);
     }
-    const handleCart = deleteFromCart(cart, tourID);
-    console.log(handleCart.tours[0]);
-    // if (!handleCart.tours.includes(tourID)) {
-    //   throw errorHandler("tour is not found", 400);
-    // }
+    const handleCart = deleteFromCartHandler(cart, tourID);
+
     await CartModel.findByIdAndUpdate(cart.id, {
       ...handleCart,
     });
     const newCart = await CartModel.findById(cart.id);
-    successHandler(res, newCart, "item removed from cart successfully");
+
+    req.Result = {
+      data: newCart,
+      message: "item removed from cart successfully",
+    };
+    next();
   } catch (err) {
     next(err);
   }
 };
 
-const deleteFromCart = (cart, tourID) => {
+const deleteFromCartHandler = (cart, tourID) => {
   const newTours = cart.tours.filter(
     (item) => parseInt(item) !== parseInt(tourID)
   );

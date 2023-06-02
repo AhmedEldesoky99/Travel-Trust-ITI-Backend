@@ -1,5 +1,4 @@
 const { CartModel } = require("../../models/index");
-const { successHandler } = require("../../utils/responseHandler");
 
 exports.getCart = async (req, res, next) => {
   try {
@@ -10,7 +9,11 @@ exports.getCart = async (req, res, next) => {
     }
     const newCart = await CartModel.findOne({ user: req.userID });
 
-    successHandler(res, newCart);
+    req.Result = {
+      data: newCart,
+    };
+
+    next();
   } catch (err) {
     next(err);
   }

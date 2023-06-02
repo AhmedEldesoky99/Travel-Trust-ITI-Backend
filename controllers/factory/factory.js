@@ -1,11 +1,15 @@
-export const create = (model) => {};
-export const update = (model) => {};
-export const getOne = (model) => {};
-export const getAll = (model) => {};
+const { successHandler } = require("../../utils/responseHandler");
 
-module.exports = {
-  create,
-  update,
-  getAll,
-  getOne,
+exports.responseFactory = async (req, res, next) => {
+  try {
+    successHandler(
+      res,
+      req.Result?.data,
+      req.Result?.length,
+      req.Result?.message,
+      req.Result?.status
+    );
+  } catch (err) {
+    next(err);
+  }
 };

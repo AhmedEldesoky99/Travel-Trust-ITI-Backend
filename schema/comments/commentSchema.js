@@ -14,11 +14,13 @@ const commentSchema = new Schema(
       type: Number,
       ref: "User",
       require: true,
+      autopopulate: true,
     },
     tour: {
       type: Number,
       ref: "Tour",
       require: true,
+      autopopulate: true,
     },
   },
   { timestamps: true },
@@ -30,4 +32,5 @@ const commentSchema = new Schema(
 );
 
 commentSchema.plugin(autoIncrement.plugin, "Comment");
+commentSchema.plugin(require("mongoose-autopopulate"));
 module.exports = commentSchema;

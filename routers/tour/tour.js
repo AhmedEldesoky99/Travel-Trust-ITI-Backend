@@ -17,6 +17,8 @@ const {
 const { createValidTour, updateValidTour } = require("../../validation/tour");
 const { getCityTours } = require("../../controllers/tour/getCityTours");
 const { getToursOnSale } = require("../../controllers/tour/getToursOnSale");
+const { ToursStats } = require("../../controllers/tour/toursStats");
+const { responseFactory } = require("../../controllers/factory/factory");
 
 const tourRouter = express.Router();
 
@@ -40,7 +42,8 @@ tourRouter.patch(
 
 tourRouter.delete("/:id", protect, deleteOneTour);
 
-tourRouter.get("/", getAllTours);
+tourRouter.get("/", getAllTours, responseFactory);
+tourRouter.get("/statistics", getAllTours, ToursStats, responseFactory);
 tourRouter.get("/sales", getToursOnSale);
 tourRouter.get("/:id", getOneTour);
 tourRouter.get("/organizer/:organizerID", getAdminTours);

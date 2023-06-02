@@ -39,7 +39,7 @@ exports.getAllTours = async (req, res, next) => {
         { $match: { price_per_person: { $lte: +maxPrice } } },
       ];
     }
-    if (status === "complete" || status !== "complete") {
+    if (status && (status === "complete" || status !== "complete")) {
       stages = [...stages, { $match: { status: status } }];
     }
     if (limit) {
@@ -77,7 +77,11 @@ exports.getAllTours = async (req, res, next) => {
       },
     ]);
 
-    successHandler(res, tours, tours.length);
+    req.Result = {
+      data: tours,
+      length: tours.length,
+    };
+    next();
   } catch (err) {
     next(err);
   }
