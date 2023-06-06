@@ -29,6 +29,10 @@ exports.signUp = async (req, res, next) => {
         400
       );
     }
+    const checkedUserSSN = await userModel.findOne({ ssn });
+    if (checkedUserSSN) {
+      throw errorHandler("ssn is already exist try different ssn ", 400);
+    }
     // hash password
     const pass = await hashPassword(password);
 
@@ -40,8 +44,6 @@ exports.signUp = async (req, res, next) => {
       role,
       ssn: role === "user" ? username : ssn,
     });
-
-    console.log("x", createUser);
 
     //get the user
     const newUser = await userModel.findOne({ email });

@@ -1,10 +1,10 @@
 // function to handle error
-function errorHandler(error = "Something went wrong", status = 500) {
+function errorHandler(error, status) {
   return {
     status,
     response: {
       success: false,
-      message: error,
+      message: [error],
     },
   };
 }
