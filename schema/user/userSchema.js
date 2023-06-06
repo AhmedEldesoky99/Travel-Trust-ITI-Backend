@@ -7,7 +7,7 @@ const autoIncrement = require("mongoose-auto-increment");
 
 const userSchema = new Schema(
   {
-    username: { type: String, trim: true },
+    username: { type: String, trim: true, unique: true },
     phone: { type: String, trim: true },
     cart: {
       type: Number,

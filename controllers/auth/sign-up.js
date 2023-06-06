@@ -13,12 +13,19 @@ exports.signUp = async (req, res, next) => {
     if (role === "admin" && !ssn) {
       throw errorHandler("ssn is required for admin");
     }
-
     // check if user exist
-    const checkedUser = await userModel.findOne({ email });
-    if (checkedUser) {
+    const checkedUserEmail = await userModel.findOne({ email });
+
+    if (checkedUserEmail) {
       throw errorHandler(
         "email is already exist try different email or sign in",
+        400
+      );
+    }
+    const checkedUserName = await userModel.findOne({ username });
+    if (checkedUserName) {
+      throw errorHandler(
+        "username is already exist try different username ",
         400
       );
     }
@@ -27,7 +34,14 @@ exports.signUp = async (req, res, next) => {
 
     // create new user
 
-    await userModel.create({ ...req.body, password: pass, role });
+    const createUser = await userModel.create({
+      ...req.body,
+      password: pass,
+      role,
+      ssn: role === "user" ? username : ssn,
+    });
+
+    console.log("x", createUser);
 
     //get the user
     const newUser = await userModel.findOne({ email });
