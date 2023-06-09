@@ -10,7 +10,7 @@ const CitiesSchema = new Schema(
     full_image: { type: String, trim: true },
     section_image: { type: String, trim: true },
     destination: { type: String, trim: true },
-    tours_number: Number,
+    tours_number: { type: Number, default: 0 },
   },
   {
     toJSON: { virtuals: true },

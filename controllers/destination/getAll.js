@@ -6,6 +6,7 @@ exports.getAllDestinations = async (req, res, next) => {
   try {
     //insert data
     //  await Destination.insertMany(destinationsArr);
+
     const destinations = await Destination.find()
       .populate("greater_cairo_region")
       .populate("alexandria_region")

@@ -20,7 +20,7 @@ exports.createTour = async (req, res, next) => {
       throw errorHandler("category id is invalid", 400);
     }
 
-    await Promise.all(
+    await Promise.allSettled(
       req.files.map(async (item) => {
         const uploadedFile = await uploadCloud(item.file);
 
@@ -30,6 +30,18 @@ exports.createTour = async (req, res, next) => {
         const isPlanImage = isFinite(item.name[5]);
         if (isPlanImage)
           req.body.plan[item.name[5]].image = [{ ...uploadedFile }];
+      })
+    );
+
+    const noToursOfCity = await Tour.aggregate([
+      { $group: { _id: "$city", tours_number: { $sum: 1 } } },
+    ]);
+
+    await Promise.allSettled(
+      noToursOfCity.map(async (item) => {
+        await City.findByIdAndUpdate(item._id, {
+          tours_number: item.tours_number,
+        });
       })
     );
 
