@@ -47,8 +47,14 @@ const tourSchema = new Schema(
         title: { type: String, trim: true },
         start_time: String,
         end_time: String,
-        stop_location: [{ type: String, trim: true }],
-        duration: [String],
+        // stop_location: [{ type: String, trim: true }],
+        // duration: [String],
+        details: [
+          {
+            stop_location: { type: String, trim: true },
+            duration: String,
+          },
+        ],
         image: Array,
       },
     ],

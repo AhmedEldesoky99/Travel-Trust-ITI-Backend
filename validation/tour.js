@@ -24,8 +24,12 @@ const validationObj = {
       title: joi.string().required(),
       start_time: joi.string().regex(/^((0?[1-9]|1[0-2]):[0-5]\d [ap]m)$/),
       end_time: joi.string().regex(/^((0?[1-9]|1[0-2]):[0-5]\d [ap]m)$/),
-      stop_location: joi.array().items(joi.string().required()),
-      duration: joi.array().items(joi.string().required()),
+      details: joi.array().items(
+        joi.object().keys({
+          stop_location: joi.string().required(),
+          duration: joi.string().required(),
+        })
+      ),
     })
   ),
 };
