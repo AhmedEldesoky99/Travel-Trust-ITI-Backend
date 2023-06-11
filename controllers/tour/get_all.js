@@ -59,6 +59,8 @@ exports.getAllTours = async (req, res, next) => {
           as: "organizer",
         },
       },
+      { $unwind: "$organizer" },
+
       {
         $lookup: {
           from: "cities",
@@ -67,6 +69,8 @@ exports.getAllTours = async (req, res, next) => {
           as: "city",
         },
       },
+      { $unwind: "$city" },
+
       {
         $lookup: {
           from: "categories",
@@ -75,6 +79,7 @@ exports.getAllTours = async (req, res, next) => {
           as: "category",
         },
       },
+      { $unwind: "$category" },
     ]);
 
     req.Result = {
