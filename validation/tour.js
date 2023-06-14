@@ -18,9 +18,11 @@ const validationObj = {
     longitude: joi.number().min(-90).max(90).required(),
   }),
   publish: joi.boolean(),
-  highlight_photos: joi.string().required(),
+  highlight_photos: joi.array().items(joi.object()).required(),
+  food_photos: joi.array().items(joi.object()).required(),
   plan: joi.array().items(
     joi.object().keys({
+      image: joi.object().required(),
       title: joi.string().required(),
       start_time: joi.string().regex(/^((0?[1-9]|1[0-2]):[0-5]\d [ap]m)$/),
       end_time: joi.string().regex(/^((0?[1-9]|1[0-2]):[0-5]\d [ap]m)$/),
