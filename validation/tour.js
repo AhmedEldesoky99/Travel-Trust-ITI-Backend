@@ -1,7 +1,7 @@
 const joi = require("joi");
 const { errorHandler } = require("../utils/responseHandler");
 
-const validationObj = {
+const validationObj = joi.object({
   title: joi.string().required(),
   city: joi.number().required(),
   category: joi.array().items(joi.number().required()).required(),
@@ -18,10 +18,9 @@ const validationObj = {
     longitude: joi.number().min(-90).max(90).required(),
   }),
   publish: joi.boolean().required().default(true),
-  // highlight_photos: joi.required(),
-  // food_photos: joi.required(),
+  highlight_photos: joi.string().required("highlight_photos is required"),
+  food_photos: joi.string().required("food_photos is required"),
   sale: joi.number().min(1).max(99).optional(),
-
   plan: joi.array().items(
     joi.object().keys({
       title: joi.string().required(),
@@ -35,7 +34,7 @@ const validationObj = {
       ),
     })
   ),
-};
+});
 
 const findItemInObj = (itemName, arr) => {
   const item = arr.find((item) => item.name === itemName);
@@ -46,12 +45,14 @@ const ValidTour = async (req, res, next) => {
   try {
     await validationObj.validateAsync({
       ...req.body,
-      // highlight_photos: findItemInObj("highlight_photos", req.files),
-      // food_photos: findItemInObj("food_photos", req.files),
+      highlight_photos: findItemInObj("highlight_photos", req.files),
+      food_photos: findItemInObj("food_photos", req.files),
     });
+
     next();
   } catch (err) {
-    next(errorHandler(err.details.map((err) => err.message)), 400);
+    console.log(err);
+    next(errorHandler(err?.details?.map((err) => err.message)), 400);
   }
 };
 
