@@ -18,14 +18,30 @@ const validationObj = joi.object({
     longitude: joi.number().min(-90).max(90).required(),
   }),
   publish: joi.boolean().required().default(true),
-  // highlight_photos: joi.string().required("highlight_photos is required"),
-  // food_photos: joi.string().required("food_photos is required"),
+  highlight_photos: joi
+    .array()
+    .items(
+      joi.object().keys({
+        name: joi.string(),
+        file: joi.string(),
+      })
+    )
+    .required("highlight_photos is required"),
+  food_photos: joi
+    .array()
+    .items(
+      joi.object().keys({
+        name: joi.string(),
+        file: joi.string(),
+      })
+    )
+    .required("food_photos is required"),
   sale: joi.number().min(1).max(99).optional(),
   plan: joi.array().items(
     joi.object().keys({
       title: joi.string().required(),
-      start_time: joi.string().regex(/^((0?[1-9]|1[0-2]):[0-5]\d [ap]m)$/),
-      end_time: joi.string().regex(/^((0?[1-9]|1[0-2]):[0-5]\d [ap]m)$/),
+      start_time: joi.string(),
+      end_time: joi.string(),
       details: joi.array().items(
         joi.object().keys({
           stop_location: joi.string().required(),
@@ -36,18 +52,16 @@ const validationObj = joi.object({
   ),
 });
 
-const findItemInObj = (itemName, arr) => {
-  const item = arr.find((item) => item.name === itemName);
-  return item?.file;
+const findItemInObj = (fileName, array) => {
+  return array.filter((item) => (item.name === fileName ? item : false));
 };
-
 const ValidTour = async (req, res, next) => {
   try {
     console.log(findItemInObj("highlight_photos", req.files));
     await validationObj.validateAsync({
       ...req.body,
-      // highlight_photos: findItemInObj("highlight_photos", req.files),
-      // food_photos: findItemInObj("food_photos", req.files),
+      highlight_photos: findItemInObj("highlight_photos", req.files),
+      food_photos: findItemInObj("food_photos", req.files),
     });
 
     next();
