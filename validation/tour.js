@@ -13,7 +13,6 @@ const validationObj = joi.object({
   description: joi.string().required(),
   dress_code: joi.string().optional(),
   include: joi.array().items(joi.string()),
-  time: joi.array(),
   meeting_point: joi.object().keys({
     latitude: joi.number().min(-90).max(90).required(),
     longitude: joi.number().min(-90).max(90).required(),
@@ -40,6 +39,7 @@ const validationObj = joi.object({
   sale: joi.number().min(1).max(99).optional(),
   plan: joi.array().items(
     joi.object().keys({
+      time: joi.array(),
       title: joi.string().required(),
       start_time: joi.string(),
       end_time: joi.string(),
