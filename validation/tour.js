@@ -18,18 +18,17 @@ const validationObj = {
     longitude: joi.number().min(-90).max(90).required(),
   }),
   publish: joi.boolean().required().default(true),
-  highlight_photos: joi.array().items(joi.object()).required(),
-  food_photos: joi.array().items(joi.object()).required(),
+  highlight_photos: joi.required(),
+  food_photos: joi.required(),
   plan: joi.array().items(
     joi.object().keys({
-      image: joi.array().items(joi.object()).required(),
       title: joi.string().required(),
       start_time: joi.string().regex(/^((0?[1-9]|1[0-2]):[0-5]\d [ap]m)$/),
       end_time: joi.string().regex(/^((0?[1-9]|1[0-2]):[0-5]\d [ap]m)$/),
       details: joi.array().items(
         joi.object().keys({
           stop_location: joi.string().required(),
-          duration: joi.number().required(),
+          duration: joi.string().required(),
         })
       ),
     })
@@ -37,6 +36,7 @@ const validationObj = {
 };
 
 const createTourSchema = joi.object(validationObj);
+
 const updateTourSchema = joi.object({
   ...validationObj,
   // highlight_photos: joi.string(),
@@ -54,10 +54,6 @@ const createValidTour = async (req, res, next) => {
       ...req.body,
       highlight_photos: findItemInObj("highlight_photos", req.files),
       food_photos: findItemInObj("food_photos", req.files),
-      plan: {
-        ...plan,
-        image: findItemInObj("image", req.files),
-      },
     });
     next();
   } catch (err) {
@@ -68,12 +64,8 @@ const updateValidTour = async (req, res, next) => {
   try {
     await updateTourSchema.validateAsync({
       ...req.body,
-      highlight_photos: findItemInObj("highlight_photos", req.files),
       food_photos: findItemInObj("food_photos", req.files),
-      plan: {
-        ...plan,
-        image: findItemInObj("image", req.files),
-      },
+      highlight_photos: findItemInObj("highlight_photos", req.files),
     });
     next();
   } catch (err) {
