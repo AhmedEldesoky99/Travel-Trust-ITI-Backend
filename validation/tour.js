@@ -18,8 +18,8 @@ const validationObj = joi.object({
     longitude: joi.number().min(-90).max(90).required(),
   }),
   publish: joi.boolean().required().default(true),
-  highlight_photos: joi.string().required("highlight_photos is required"),
-  food_photos: joi.string().required("food_photos is required"),
+  // highlight_photos: joi.string().required("highlight_photos is required"),
+  // food_photos: joi.string().required("food_photos is required"),
   sale: joi.number().min(1).max(99).optional(),
   plan: joi.array().items(
     joi.object().keys({
@@ -43,10 +43,11 @@ const findItemInObj = (itemName, arr) => {
 
 const ValidTour = async (req, res, next) => {
   try {
+    console.log(findItemInObj("highlight_photos", req.files));
     await validationObj.validateAsync({
       ...req.body,
-      highlight_photos: findItemInObj("highlight_photos", req.files),
-      food_photos: findItemInObj("food_photos", req.files),
+      // highlight_photos: findItemInObj("highlight_photos", req.files),
+      // food_photos: findItemInObj("food_photos", req.files),
     });
 
     next();
