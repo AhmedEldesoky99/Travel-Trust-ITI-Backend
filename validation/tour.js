@@ -11,7 +11,7 @@ const validationObj = {
   start_date: joi.date().required(),
   end_date: joi.date().required(),
   description: joi.string().required(),
-  dress_code: joi.string(),
+  dress_code: joi.string().optional(),
   include: joi.array().items(joi.string()),
   meeting_point: joi.object().keys({
     latitude: joi.number().min(-90).max(90).required(),
