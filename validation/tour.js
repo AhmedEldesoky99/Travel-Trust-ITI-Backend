@@ -3,7 +3,7 @@ const { errorHandler } = require("../utils/responseHandler");
 
 const validationObj = {
   title: joi.string().required(),
-  city: joi.string().required(),
+  city: joi.number().required(),
   category: joi.string().required(),
   price_per_person: joi.number().required(),
   person_num: joi.number().required(),
@@ -14,8 +14,8 @@ const validationObj = {
   dress_code: joi.string(),
   include: joi.array().items(joi.string()),
   meeting_point: joi.object().keys({
-    latitude: joi.number().required(),
-    longitude: joi.number().required(),
+    latitude: joi.number().min(-90).max(90).required(),
+    longitude: joi.number().min(-90).max(90).required(),
   }),
   publish: joi.boolean(),
   highlight_photos: joi.string().required(),
