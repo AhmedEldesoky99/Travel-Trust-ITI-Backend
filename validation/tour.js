@@ -4,7 +4,7 @@ const { errorHandler } = require("../utils/responseHandler");
 const validationObj = {
   title: joi.string().required(),
   city: joi.number().required(),
-  category: joi.string().required(),
+  category: joi.array().items(joi.number().required()).required(),
   price_per_person: joi.number().required(),
   person_num: joi.number().required(),
   duration: joi.number().required(),
