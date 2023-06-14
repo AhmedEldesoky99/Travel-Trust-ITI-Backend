@@ -14,7 +14,7 @@ const {
   resizeTourImage,
   uploadAnyFiles,
 } = require("../../middlewares/upload-img/upload-img");
-const { createValidTour, updateValidTour } = require("../../validation/tour");
+const { ValidTour } = require("../../validation/tour");
 const { getCityTours } = require("../../controllers/tour/getCityTours");
 const { getToursOnSale } = require("../../controllers/tour/getToursOnSale");
 const { ToursStats } = require("../../controllers/tour/toursStats");
@@ -27,7 +27,7 @@ tourRouter.post(
   protect,
   uploadAnyFiles(),
   resizeTourImage,
-  createValidTour,
+  ValidTour,
   createTour
 );
 tourRouter.patch(
@@ -35,7 +35,7 @@ tourRouter.patch(
   protect,
   uploadAnyFiles(),
   resizeTourImage,
-  updateValidTour,
+  ValidTour,
   updateTour,
   getOneTour
 );

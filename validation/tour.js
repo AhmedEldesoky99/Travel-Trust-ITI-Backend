@@ -18,8 +18,10 @@ const validationObj = {
     longitude: joi.number().min(-90).max(90).required(),
   }),
   publish: joi.boolean().required().default(true),
-  highlight_photos: joi.required(),
-  food_photos: joi.required(),
+  // highlight_photos: joi.required(),
+  // food_photos: joi.required(),
+  sale: joi.number().min(1).max(99).optional(),
+
   plan: joi.array().items(
     joi.object().keys({
       title: joi.string().required(),
@@ -35,47 +37,22 @@ const validationObj = {
   ),
 };
 
-const createTourSchema = joi.object(validationObj);
-
-const updateTourSchema = joi.object({
-  ...validationObj,
-  // highlight_photos: joi.string(),
-  sale: joi.number().min(1).max(99),
-});
-
 const findItemInObj = (itemName, arr) => {
   const item = arr.find((item) => item.name === itemName);
   return item?.file;
 };
 
-const createValidTour = async (req, res, next) => {
+const ValidTour = async (req, res, next) => {
   try {
-    await createTourSchema.validateAsync({
+    await validationObj.validateAsync({
       ...req.body,
-      highlight_photos: findItemInObj("highlight_photos", req.files),
-      food_photos: findItemInObj("food_photos", req.files),
+      // highlight_photos: findItemInObj("highlight_photos", req.files),
+      // food_photos: findItemInObj("food_photos", req.files),
     });
     next();
   } catch (err) {
     next(errorHandler(err.details.map((err) => err.message)), 400);
   }
 };
-const updateValidTour = async (req, res, next) => {
-  try {
-    await updateTourSchema.validateAsync({
-      ...req.body,
-      food_photos: findItemInObj("food_photos", req.files),
-      highlight_photos: findItemInObj("highlight_photos", req.files),
-    });
-    next();
-  } catch (err) {
-    next(
-      errorHandler(
-        err.details.map((err) => err.message),
-        400
-      )
-    );
-  }
-};
 
-module.exports = { createValidTour, updateValidTour };
+module.exports = { ValidTour };
