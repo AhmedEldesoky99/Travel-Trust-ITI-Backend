@@ -1,57 +1,58 @@
 const joi = require("joi");
 const { errorHandler } = require("../utils/responseHandler");
 
-const validationObj = joi.object({
-  title: joi.string().required(),
-  city: joi.number().required(),
-  category: joi.array().items(joi.number().required()).required(),
-  price_per_person: joi.number().required(),
-  person_num: joi.number().required(),
-  duration: joi.number().required(),
-  start_date: joi.date().required(),
-  end_date: joi.date().required(),
-  description: joi.string().required(),
-  dress_code: joi.string().optional(),
-  include: joi.array().items(joi.string()),
-  meeting_point: joi.object().keys({
-    latitude: joi.number().min(-90).max(90).required(),
-    longitude: joi.number().min(-90).max(90).required(),
-  }),
-  publish: joi.boolean().required().default(true),
-  highlight_photos: joi
-    .array()
-    .items(
-      joi.object().keys({
-        name: joi.string(),
-        file: joi.string(),
-      })
-    )
-    .required("highlight_photos is required"),
-  food_photos: joi
-    .array()
-    .items(
-      joi.object().keys({
-        name: joi.string(),
-        file: joi.string(),
-      })
-    )
-    .required("food_photos is required"),
-  sale: joi.number().min(1).max(99).optional(),
-  plan: joi.array().items(
-    joi.object().keys({
-      time: joi.array(),
-      title: joi.string().required(),
-      start_time: joi.string(),
-      end_time: joi.string(),
-      details: joi.array().items(
+const validationObj = joi
+  .object({
+    title: joi.string().required(),
+    city: joi.number().required(),
+    category: joi.array().items(joi.number().required()).required(),
+    price_per_person: joi.number().required(),
+    person_num: joi.number().required(),
+    duration: joi.number().required(),
+    start_date: joi.date().required(),
+    end_date: joi.date().required(),
+    description: joi.string().required(),
+    dress_code: joi.string().optional(),
+    include: joi.array().items(joi.string()),
+    meeting_point: joi.object().keys({
+      latitude: joi.number().min(-90).max(90).required(),
+      longitude: joi.number().min(-90).max(90).required(),
+    }),
+    publish: joi.boolean().required().default(true),
+    highlight_photos: joi
+      .array()
+      .items(
         joi.object().keys({
-          stop_location: joi.string().required(),
-          duration: joi.string().required(),
+          name: joi.string(),
+          file: joi.string(),
         })
-      ),
-    })
-  ),
-});
+      )
+      .required("highlight_photos is required"),
+    food_photos: joi
+      .array()
+      .items(
+        joi.object().keys({
+          name: joi.string(),
+          file: joi.string(),
+        })
+      )
+      .required("food_photos is required"),
+    sale: joi.number().min(1).max(99).optional(),
+    plan: joi.array().items(
+      joi.object().keys({
+        title: joi.string().required(),
+        start_time: joi.string(),
+        end_time: joi.string(),
+        details: joi.array().items(
+          joi.object().keys({
+            stop_location: joi.string().required(),
+            duration: joi.string().required(),
+          })
+        ),
+      })
+    ),
+  })
+  .options({ allowUnknown: true });
 
 const findItemInObj = (fileName, array) => {
   return array.filter((item) => (item.name === fileName ? item : false));
