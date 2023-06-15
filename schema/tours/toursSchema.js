@@ -76,10 +76,10 @@ const tourSchema = new Schema(
       type: String,
       trim: true,
       enum: {
-        values: ["complete", "incomplete", "draft"],
-        message: ["difficulty is either : complete, incomplete and draft"],
+        values: ["complete", "publish", "draft"],
+        message: ["difficulty is either : complete, publish and draft"],
       },
-      default: "incomplete",
+      default: "publish",
     },
     rate: {
       type: Number,
