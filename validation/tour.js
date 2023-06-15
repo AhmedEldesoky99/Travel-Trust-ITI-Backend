@@ -57,6 +57,7 @@ const validationObj = joi
 const findItemInObj = (fileName, array) => {
   return array.filter((item) => (item.name === fileName ? item : false));
 };
+
 const ValidTour = async (req, res, next) => {
   try {
     console.log(findItemInObj("highlight_photos", req.files));

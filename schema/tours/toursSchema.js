@@ -76,8 +76,8 @@ const tourSchema = new Schema(
       type: String,
       trim: true,
       enum: {
-        values: ["complete", "incomplete"],
-        message: ["difficulty is either : complete, incomplete"],
+        values: ["complete", "incomplete", "draft"],
+        message: ["difficulty is either : complete, incomplete and draft"],
       },
       default: "incomplete",
     },

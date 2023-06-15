@@ -9,9 +9,7 @@ exports.getAdminTours = async (req, res, next) => {
       throw errorHandler("user id is required", 400);
     }
 
-    const tours = await Tour.find({ organizer: organizerID }).populate(
-      "organizer"
-    );
+    const tours = await Tour.find({ organizer: organizerID });
 
     successHandler(res, tours, tours.length);
   } catch (err) {

@@ -10,7 +10,7 @@ exports.updateTour = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const getTour = await Tour.findById(id).populate("organizer");
+    const getTour = await Tour.findById(id);
 
     if (!getTour) {
       throw errorHandler("invalid tour id", 404);
