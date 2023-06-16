@@ -9,7 +9,7 @@ exports.getAllTours = async (req, res, next) => {
   try {
     const { limit, city, minPrice, maxPrice, category, status, rate } =
       req.query;
-    let stages = [{ $match: { publish: true } }];
+    let stages = [{ $match: { status: "publish" } }];
 
     if (city) {
       const cityResult = await City.findById(+city);
@@ -39,7 +39,7 @@ exports.getAllTours = async (req, res, next) => {
         { $match: { price_per_person: { $lte: +maxPrice } } },
       ];
     }
-    if (status && (status === "complete" || status !== "complete")) {
+    if (status) {
       stages = [...stages, { $match: { status: status } }];
     }
     if (limit) {
