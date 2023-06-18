@@ -1,27 +1,20 @@
 const fs = require("fs");
-const cloudinary = require("cloudinary").v2;
+const imgbbUploader = require("imgbb-uploader");
 const dotenv = require("dotenv");
 const { errorHandler } = require("../../utils/responseHandler");
 dotenv.config();
 
-// Configuration
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
-});
-
-// Upload
-exports.uploadCloud = async (file) => {
+exports.uploadCloudBB = async (file) => {
+  console.log("uploading img to imgbb");
   try {
-    const result = await cloudinary.uploader.upload(file);
+    const result = await imgbbUploader(process.env.IMGBB_KEY, file);
     if (result) {
       fs.unlink(file, function (err) {
         if (err) {
           console.log(err);
         }
       });
-      return { url: result.url, public_id: result.public_id };
+      return { url: result.url, public_id: result.id };
     }
   } catch (err) {
     console.log(err);

@@ -1,4 +1,5 @@
 const { uploadCloud } = require("../../middlewares/cloudinary/cloudinary");
+const { uploadCloudBB } = require("../../middlewares/imgBB");
 const {
   tourModel: Tour,
   CitiesModal: City,
@@ -20,27 +21,26 @@ exports.createTour = async (req, res, next) => {
       throw errorHandler("category id is invalid", 400);
     }
 
-    const uploadImages = await Promise.allSettled(
+    await Promise.all(
       req.files.map(async (item) => {
-        const uploadedFile = await uploadCloud(item.file);
-
+        console.log(item.file);
+        const uploadedFile = await uploadCloudBB(item.file);
+        // console.log(uploadedFile);
         req.body[item.name] = [{ ...uploadedFile }];
 
         //check if plan image
         const isPlanImage = isFinite(item.name[5]);
-        if (isPlanImage)
+        if (isPlanImage) {
+          // console.log(item.name[5]);
           req.body.plan[item.name[5]].image = [{ ...uploadedFile }];
+        }
       })
     );
-    if (uploadImages.length === 0) {
-      throw errorHandler("all images of tour is required ");
-    }
 
     const noToursOfCity = await Tour.aggregate([
       { $group: { _id: "$city", tours_number: { $sum: 1 } } },
     ]);
-
-    await Promise.allSettled(
+    await Promise.all(
       noToursOfCity.map(async (item) => {
         await City.findByIdAndUpdate(item._id, {
           tours_number: item.tours_number,
@@ -53,6 +53,7 @@ exports.createTour = async (req, res, next) => {
       ...req.body,
     });
     const createdTour = await Tour.create(tour);
+
     successHandler(res, createdTour, "tour created successfully");
   } catch (err) {
     next(err);

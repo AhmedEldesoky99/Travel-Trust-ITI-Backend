@@ -13,8 +13,12 @@ const validationObj = joi
     end_date: joi.date().required(),
     description: joi.string().required(),
     dress_code: joi.string().default("no dress code"),
-    include: joi.array().items(joi.string()),
+    include: joi.object().keys({
+      package: joi.array().items(joi.string()),
+      meals: joi.array().items(joi.string()),
+    }),
     meeting_point: joi.object().keys({
+      description: joi.string(),
       latitude: joi.number().min(-90).max(90).required(),
       longitude: joi.number().min(-90).max(90).required(),
     }),
@@ -68,8 +72,12 @@ const ValidTour = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.log(err);
-    next(errorHandler(err?.details?.map((err) => err.message)), 400);
+    next(
+      errorHandler(
+        err?.details?.map((err) => err.message),
+        400
+      )
+    );
   }
 };
 

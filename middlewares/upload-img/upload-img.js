@@ -6,13 +6,13 @@ exports.sharpHandler = async (buffer, id) => {
   const uniqueNumber = Date.now();
   await sharp(buffer)
     .resize({
-      width: 800,
+      width: 600,
       fit: "contain",
       background: { r: 255, g: 255, b: 255, alpha: 0 },
     })
     .flatten({ background: "#fff" })
     .toFormat("jpeg")
-    .webp({ quality: 90 })
+    .webp({ quality: 80 })
     .toFile(`uploads/user-${id}-${uniqueNumber}.jpeg`);
   return `uploads/user-${id}-${uniqueNumber}.jpeg`;
 };

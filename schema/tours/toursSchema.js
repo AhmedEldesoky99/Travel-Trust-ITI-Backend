@@ -65,6 +65,7 @@ const tourSchema = new Schema(
     highlight_photos: { type: Array },
 
     meeting_point: {
+      description: { type: String, trim: true },
       longitude: { type: Number, trim: true },
       latitude: { type: Number, trim: true },
     },
