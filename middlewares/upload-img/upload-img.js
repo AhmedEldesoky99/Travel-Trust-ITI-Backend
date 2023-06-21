@@ -36,6 +36,8 @@ const fileFilter = (req, file, cd) => {
 };
 
 exports.resizeTourImage = async (req, res, next) => {
+  console.log("resizing tour images", req.files);
+
   req.files = await Promise.all(
     req.files.map(async (item) => ({
       name: item.fieldname,
