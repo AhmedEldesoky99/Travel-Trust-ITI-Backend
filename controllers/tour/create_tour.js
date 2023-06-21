@@ -6,11 +6,11 @@ const {
   CategoryModel: Category,
 } = require("../../models/index");
 const { errorHandler, successHandler } = require("../../utils/responseHandler");
-const { isAdmin } = require("../auth/auth");
+const { isOrganizer } = require("../auth/auth");
 
 exports.createTour = async (req, res, next) => {
   try {
-    await isAdmin(req.userID);
+    await isOrganizer(req.userID);
 
     const city = await City.findById(req.body.city);
     if (!city) {

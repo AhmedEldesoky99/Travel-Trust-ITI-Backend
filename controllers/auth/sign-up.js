@@ -7,11 +7,11 @@ exports.signUp = async (req, res, next) => {
     const { username, phone, email, ssn, password } = req.body;
 
     const { role } = req.params;
-    if (!role || !["admin", "user"].includes(role)) {
-      throw errorHandler("role must be admin or user");
+    if (!role || !["organizer", "user"].includes(role)) {
+      throw errorHandler("role must be organizer or user ");
     }
-    if (role === "admin" && !ssn) {
-      throw errorHandler("ssn is required for admin");
+    if (role === "organizer" && !ssn) {
+      throw errorHandler("ssn is required for organizer");
     }
     // check if user exist
     const checkedUserEmail = await userModel.findOne({ email });

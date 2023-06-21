@@ -52,10 +52,10 @@ const protect = async (req, res, next) => {
     next(errorHandler("unauthorized", 401));
   }
 };
-const isAdmin = async (id) => {
+const isOrganizer = async (id) => {
   const user = await userModel.findById(id);
-  if (user.role !== "admin") {
-    throw errorHandler("admins only can create tour", 400);
+  if (user.role !== "organizer") {
+    throw errorHandler("organizer only can create tour", 400);
   }
 };
 
@@ -64,5 +64,5 @@ module.exports = {
   hashPassword,
   signUserToken,
   comparePassword,
-  isAdmin,
+  isOrganizer,
 };

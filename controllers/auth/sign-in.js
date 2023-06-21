@@ -7,9 +7,19 @@ const signIn = async (req, res, next) => {
     const { email, password } = req.body;
     const { role } = req.params;
 
+    // await userModel.updateMany({ role: "admin" }, { role: "organizer" });
+
+    const roles = ["admin", "user", "organizer"];
+
+    if (!roles.includes(role)) {
+      throw errorHandler("invalid rule");
+    }
+
     // check if user exist
     const user = await userModel.findOne({ email }).select("password");
-    const userBody = await userModel.findOne({ email }).populate("favorite_tours");
+    const userBody = await userModel
+      .findOne({ email })
+      .populate("favorite_tours");
     if (!user) {
       throw errorHandler("user not found please sign up", 404);
     }
