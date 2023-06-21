@@ -1,3 +1,4 @@
+const { isArray } = require("util");
 const { tourModel: Tour } = require("../../models");
 
 exports.ToursStats = async (req, res, next) => {
@@ -19,18 +20,36 @@ exports.ToursStats = async (req, res, next) => {
         } else {
           minPrice = tour.price_per_person;
         }
-        tour.category.map((cat) => {
+        if (isArray(tour.category))
+          tour.category?.map((cat) => {
+            categories = {
+              ...categories,
+              [cat.name]: categories[cat.name] ? ++categories[cat.name] : 1,
+            };
+          });
+        else {
           categories = {
             ...categories,
-            [cat.name]: categories[cat.name] ? ++categories[cat.name] : 1,
+            [tour.category.name]: categories[tour.category.name]
+              ? ++categories[tour.category.name]
+              : 1,
           };
-        });
-        tour.city.map((cit) => {
+        }
+        if (isArray(tour.category))
+          tour.city?.map((cit) => {
+            cities = {
+              ...cities,
+              [cit.title]: cities[cit.title] ? ++cities[cit.title] : 1,
+            };
+          });
+        else {
           cities = {
             ...cities,
-            [cit.title]: cities[cit.title] ? ++cities[cit.title] : 1,
+            [tour.city.title]: cities[tour.city.title]
+              ? ++cities[tour.city.title]
+              : 1,
           };
-        });
+        }
         rates = {
           ...rates,
           [tour.rate + "Star"]: rates[tour.rate + "Star"]
