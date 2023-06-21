@@ -22,7 +22,7 @@ exports.updateUser = async (req, res, next) => {
     );
 
     await Promise.all(
-      req.body.governorate_expertise?.map(async (city, i) => {
+      [...req.body.governorate_expertise].map(async (city, i) => {
         const result = await City.findById(city);
         if (!result) {
           throw errorHandler("governorate_expertise of " + i + " is not valid");
@@ -34,6 +34,7 @@ exports.updateUser = async (req, res, next) => {
       ...req.body,
     });
 
+    console.log(req.body.governorate_expertise);
     successHandler(res, response, "user updated successfully");
   } catch (err) {
     next(err);
