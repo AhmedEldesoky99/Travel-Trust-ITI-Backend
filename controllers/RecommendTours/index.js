@@ -12,7 +12,6 @@ exports.RecommendToursToUser = async (req, res, next) => {
     const items = tours.map((tour) => ({ id: +tour.id, score: 0 }));
 
     const result = await RecommendToursForUser({ userId: +userID, items });
-    console.log(result, "result");
     let response = [];
 
     if (result.code === 200) {
@@ -22,7 +21,6 @@ exports.RecommendToursToUser = async (req, res, next) => {
           .map(async (item) => await Tour.findById(+item.id))
       );
     }
-    console.log(response, "response");
     successHandler(res, response, response.length);
   } catch (err) {
     next();

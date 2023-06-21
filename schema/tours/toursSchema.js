@@ -91,7 +91,7 @@ const tourSchema = new Schema(
       type: Number,
       default: 0,
     },
-    reservation_number: Number,
+    reservation_number: { type: Number, default: 0 },
   },
   { timestamps: true },
   {

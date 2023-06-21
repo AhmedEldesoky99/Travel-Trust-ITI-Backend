@@ -12,6 +12,7 @@ const CartSchema = new Schema(
       {
         type: Number,
         ref: "Tour",
+        autopopulate: true,
       },
     ],
     tour_details: Array,
@@ -23,4 +24,6 @@ const CartSchema = new Schema(
   { timestamps: true }
 );
 CartSchema.plugin(autoIncrement.plugin, "Cart");
+CartSchema.plugin(require("mongoose-autopopulate"));
+
 module.exports = CartSchema;

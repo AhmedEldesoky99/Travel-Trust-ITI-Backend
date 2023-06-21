@@ -22,24 +22,24 @@ const validationObj = joi
       latitude: joi.number().min(-90).max(90).required(),
       longitude: joi.number().min(-90).max(90).required(),
     }),
-    highlight_photos: joi
-      .array()
-      .items(
-        joi.object().keys({
+    highlight_photos: joi.array().items(
+      joi
+        .object()
+        .keys({
           name: joi.string(),
           file: joi.string(),
         })
-      )
-      .required("highlight_photos is required"),
-    food_photos: joi
-      .array()
-      .items(
-        joi.object().keys({
+        .required("highlight_photos is required")
+    ),
+    food_photos: joi.array().items(
+      joi
+        .object()
+        .keys({
           name: joi.string(),
           file: joi.string(),
         })
-      )
-      .required("food_photos is required"),
+        .required("food_photos is required")
+    ),
     sale: joi.number().min(1).max(99).optional(),
     plan: joi.array().items(
       joi.object().keys({

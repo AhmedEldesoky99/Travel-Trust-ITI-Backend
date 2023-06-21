@@ -6,13 +6,13 @@ exports.sharpHandler = async (buffer, id) => {
   const uniqueNumber = Date.now();
   await sharp(buffer)
     .resize({
-      width: 600,
+      width: 500,
       fit: "contain",
       background: { r: 255, g: 255, b: 255, alpha: 0 },
     })
     .flatten({ background: "#fff" })
     .toFormat("jpeg")
-    .webp({ quality: 80 })
+    .webp({ quality: 70 })
     .toFile(`uploads/user-${id}-${uniqueNumber}.jpeg`);
   return `uploads/user-${id}-${uniqueNumber}.jpeg`;
 };
@@ -36,7 +36,7 @@ const fileFilter = (req, file, cd) => {
 };
 
 exports.resizeTourImage = async (req, res, next) => {
-  console.log("resizing tour images", req.files);
+  console.log("resizing tour images");
 
   req.files = await Promise.all(
     req.files.map(async (item) => ({

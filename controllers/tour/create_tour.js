@@ -20,7 +20,7 @@ exports.createTour = async (req, res, next) => {
     if (!category) {
       throw errorHandler("category id is invalid", 400);
     }
-    console.log(req.files, "req.files");
+
     await Promise.all(
       req.files.map(async (item) => {
         console.log(item.file);

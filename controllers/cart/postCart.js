@@ -11,12 +11,21 @@ exports.addToCart = async (req, res, next) => {
       throw errorHandler("tour is not found", 400);
     }
     let total_money, createdCart, newCart;
+
+    if (+subscriber_number > tour.person_num - tour.reservation_number) {
+      throw errorHandler(
+        `tour have only ${
+          tour.person_num - tour.reservation_number
+        } persons available`
+      );
+    }
     if (!cart) {
       total_money = +subscriber_number * +tour.price_per_person;
       const Cart = new CartModel({
         user: req.userID,
         tours: tourID,
         total_money,
+        reservation_number: tour.reservation_number + subscriber_number,
         tour_details: { tour_id: tourID, money: total_money },
       });
 
