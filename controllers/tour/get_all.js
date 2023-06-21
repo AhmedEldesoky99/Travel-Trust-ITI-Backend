@@ -79,7 +79,7 @@ exports.getAllTours = async (req, res, next) => {
           as: "category",
         },
       },
-      { $unwind: "$category" },
+      // { $unwind: "$category" },
     ]);
 
     req.Result = {
