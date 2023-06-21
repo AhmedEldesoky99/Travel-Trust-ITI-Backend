@@ -54,8 +54,8 @@ const protect = async (req, res, next) => {
 };
 const isOrganizer = async (id) => {
   const user = await userModel.findById(id);
-  if (user.role !== "organizer") {
-    throw errorHandler("organizer only can create tour", 400);
+  if (user.role !== "organizer" || !user.verified) {
+    throw errorHandler("verified organizer only can create tour", 400);
   }
 };
 

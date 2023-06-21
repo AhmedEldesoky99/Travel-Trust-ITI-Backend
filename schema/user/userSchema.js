@@ -34,7 +34,16 @@ const userSchema = new Schema(
       type: Array,
       default: null,
     },
-    cover_photo: Array,
+    cover_photo: {
+      type: Array,
+      default: null,
+    },
+    civil_photos: [
+      {
+        type: Array,
+        default: null,
+      },
+    ],
     role: { type: String, trim: true },
     bio: String,
     city: {
@@ -50,6 +59,11 @@ const userSchema = new Schema(
         autopopulate: true,
       },
     ],
+
+    verified: {
+      type: Boolean,
+      default: false,
+    },
     cash: Number,
     currency: { type: String, trim: true },
     created_at: {

@@ -39,7 +39,7 @@ exports.toursStats = (data) => {
           : 1,
       };
     }
-    if (isArray(tour.category))
+    if (isArray(tour.city))
       tour.city?.map((cit) => {
         cities = {
           ...cities,

@@ -7,7 +7,7 @@ const signIn = async (req, res, next) => {
     const { email, password } = req.body;
     const { role } = req.params;
 
-    // await userModel.updateMany({ role: "admin" }, { role: "organizer" });
+    // await userModel.updateMany({ role: "organizer" }, { verified: false });
 
     const roles = ["admin", "user", "organizer"];
 
