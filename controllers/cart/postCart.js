@@ -1,5 +1,5 @@
 const { CartModel, tourModel } = require("../../models/index");
-const { errorHandler, successHandler } = require("../../utils/responseHandler");
+const { errorHandler } = require("../../utils/responseHandler");
 
 exports.addToCart = async (req, res, next) => {
   try {
