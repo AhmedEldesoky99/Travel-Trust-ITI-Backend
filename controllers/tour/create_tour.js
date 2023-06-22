@@ -10,7 +10,7 @@ const { isOrganizer } = require("../auth/auth");
 
 exports.createTour = async (req, res, next) => {
   try {
-    await isOrganizer(req.userID);
+    await isOrganizer(next, req.userID);
 
     const city = await City.findById(req.body.city);
     if (!city) {
