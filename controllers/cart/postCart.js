@@ -30,6 +30,7 @@ exports.addToCart = async (req, res, next) => {
       });
 
       createdCart = await CartModel.create(Cart);
+      console.log("33");
     } else {
       total_money =
         +subscriber_number * +tour.price_per_person + cart.total_money;
@@ -41,7 +42,7 @@ exports.addToCart = async (req, res, next) => {
         tours = [...cart.tours, tourID];
       }
 
-      await CartModel.findByIdAndUpdate(cart.id, {
+      await CartModel.findByIdAndUpdate(cart?.id, {
         total_money,
         tours,
         tour_details: [
@@ -53,7 +54,7 @@ exports.addToCart = async (req, res, next) => {
         ],
       });
     }
-    newCart = await CartModel.findById(cart.id);
+    newCart = await CartModel.findOne({ user: req.userID });
 
     req.Result = {
       data: newCart ? newCart : createdCart,

@@ -56,9 +56,7 @@ exports.toursStats = (data) => {
     }
     rates = {
       ...rates,
-      [tour.rate + "Star"]: rates[tour.rate + "Star"]
-        ? ++rates[tour.rate + "Star"]
-        : 1,
+      [tour.rate]: rates[tour.rate] ? ++rates[tour.rate] : 1,
     };
   });
   return { minPrice, maxPrice, categories, cities, rates };

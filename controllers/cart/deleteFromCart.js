@@ -31,18 +31,18 @@ exports.deleteFromCart = async (req, res, next) => {
 };
 
 const deleteFromCartHandler = (cart, tourID) => {
-  const newTours = cart.tours.filter(
-    (item) => parseInt(item) !== parseInt(tourID)
-  );
+  const newTours = cart.tours.filter((item) => item.id !== tourID);
 
   const newToursDetails = cart.tour_details.filter(
-    (item) => item.tour_id !== tourID
+    (item) => +item._id !== tourID
   );
+
   const totalMoney = cart.newToursDetails?.reduce(
     (acc, item) => acc + item.money,
     0
   );
 
+  console.log(newToursDetails, "newToursDetails", tourID);
   return {
     tours: newTours,
     tour_details: newToursDetails,
