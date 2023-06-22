@@ -7,3 +7,7 @@ const {
   uploadAnyFiles,
   resizeTourImage,
 } = require("../../middlewares/upload-img/upload-img");
+
+const adminRouter = express.Router();
+
+module.exports = adminRouter;

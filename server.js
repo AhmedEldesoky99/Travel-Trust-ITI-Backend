@@ -23,6 +23,7 @@ const favoritesRouter = require("./routers/favorite/favorite");
 const categoryRouter = require("./routers/category/category");
 const citiesRouter = require("./routers/cities");
 const destinationRouter = require("./routers/destination");
+const adminRouter = require("./routers/admin");
 
 //handle dotenv
 dotenv.config();
@@ -61,6 +62,7 @@ app.use("/v1/user/profile", userRouter);
 app.use("/v1/comments", commentsRouter);
 app.use("/v1/cart", cartRouter);
 app.use("/v1/favorites", favoritesRouter);
+app.use("/v1/admin", adminRouter);
 app.use("/v1", bookingRouter);
 
 //ml

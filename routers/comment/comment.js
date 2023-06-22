@@ -19,7 +19,7 @@ const { validComment } = require("../../validation/comment");
 const commentRouter = express.Router();
 
 //get all comments
-commentRouter.get("/", getAllComments);
+commentRouter.get("/:id", getAllComments);
 //create comment
 commentRouter.post("/:tourID", protect, validComment, createComment);
 //update comment
