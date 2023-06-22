@@ -9,12 +9,7 @@ exports.getAllTours = async (req, res, next) => {
   try {
     const { limit } = req.query;
 
-    let stages = [
-      { $match: { status: "publish" } },
-      { $limit: +limit || undefined },
-    ];
-
-    const tours = await Tour.find({}).limit(+limit);
+    const tours = await Tour.find({ status: "publish" }).limit(+limit);
 
     req.Result = {
       data: tours,
