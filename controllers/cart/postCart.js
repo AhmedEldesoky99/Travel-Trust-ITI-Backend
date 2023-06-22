@@ -36,7 +36,9 @@ exports.addToCart = async (req, res, next) => {
         +subscriber_number * +tour.price_per_person + cart.total_money;
       let tours;
 
-      if (cart.tours.includes(tourID)) {
+      const toursIDs = cart.tours.map((item) => +item.id);
+      console.log(toursIDs, "toursIDs");
+      if (toursIDs.includes(+tourID)) {
         throw errorHandler("tour is already in cart", 400);
       } else {
         tours = [...cart.tours, tourID];
