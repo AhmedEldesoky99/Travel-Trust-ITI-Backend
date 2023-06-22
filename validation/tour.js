@@ -64,6 +64,8 @@ const findItemInObj = (fileName, array) => {
 const ValidTour = async (req, res, next) => {
   try {
     console.log("req.files", req.files);
+    console.log("req.body", req.body);
+
     await validationObj.validateAsync({
       ...req.body,
       highlight_photos: findItemInObj("highlight_photos", req.files),
