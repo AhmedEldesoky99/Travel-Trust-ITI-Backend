@@ -4,7 +4,6 @@ const { successHandler, errorHandler } = require("../../utils/responseHandler");
 exports.getAllComments = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log(id, "id");
     let comments = await Comment.find({ user: +id }).limit(+req.query.limit);
 
     if (!comments) {

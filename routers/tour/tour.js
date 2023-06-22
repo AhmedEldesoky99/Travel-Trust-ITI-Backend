@@ -19,10 +19,9 @@ const { getCityTours } = require("../../controllers/tour/getCityTours");
 const { getToursOnSale } = require("../../controllers/tour/getToursOnSale");
 const { ToursStats } = require("../../controllers/tour/toursStats");
 const { responseFactory } = require("../../controllers/factory/factory");
+const { search } = require("../../controllers/tour/search");
 
 const tourRouter = express.Router();
-
-tourRouter.post("/search", getAllTours, responseFactory);
 
 tourRouter.post(
   "/",
@@ -32,6 +31,8 @@ tourRouter.post(
   ValidTour,
   createTour
 );
+tourRouter.post("/search", search, responseFactory);
+
 tourRouter.patch(
   "/:id",
   protect,
@@ -41,7 +42,10 @@ tourRouter.patch(
   updateTour,
   getOneTour
 );
+
 tourRouter.delete("/:id", protect, deleteOneTour);
+
+tourRouter.get("/", getAllTours, responseFactory);
 tourRouter.get("/statistics", getAllTours, ToursStats, responseFactory);
 tourRouter.get("/sales", getToursOnSale);
 tourRouter.get("/:id", getOneTour);

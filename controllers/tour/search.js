@@ -5,11 +5,39 @@ const {
   CategoryModel: Category,
 } = require("../../models");
 
-exports.getAllTours = async (req, res, next) => {
+exports.search = async (req, res, next) => {
   try {
     const { limit } = req.query;
+    const { city, minPrice, maxPrice, category, rate } = req.body;
 
-    let stages = [{ $match: { status: "publish" } }, { $limit: +limit }];
+    let stages = [{ $match: { status: "publish" } }];
+    if (isArray(city)) {
+      stages = [...stages, { $match: { city: { $in: city } } }];
+    }
+
+    if (isArray(category)) {
+      stages = [...stages, { $match: { category: { $in: category } } }];
+    }
+
+    if (minPrice) {
+      stages = [
+        ...stages,
+        { $match: { price_per_person: { $gte: +minPrice } } },
+      ];
+    }
+    if (maxPrice) {
+      stages = [
+        ...stages,
+        { $match: { price_per_person: { $lte: +maxPrice } } },
+      ];
+    }
+
+    if (limit) {
+      stages = [...stages, { $limit: +limit }];
+    }
+    if (rate) {
+      stages = [...stages, { $match: { rate: { $in: rate } } }];
+    }
 
     const tours = await Tour.aggregate([
       ...stages,
