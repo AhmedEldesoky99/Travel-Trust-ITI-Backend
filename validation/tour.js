@@ -5,7 +5,7 @@ const validationObj = joi
   .object({
     title: joi.string().required(),
     city: joi.number().required(),
-    category: joi.array().items(joi.number().required()).required(),
+    category: joi.array().items(joi.number().required()).optional(),
     price_per_person: joi.number().required(),
     person_num: joi.number().required(),
     duration: joi.number().required(),
@@ -42,17 +42,20 @@ const validationObj = joi
     ),
     sale: joi.number().min(1).max(99).optional(),
     plan: joi.array().items(
-      joi.object().keys({
-        title: joi.string().required(),
-        start_time: joi.string(),
-        end_time: joi.string(),
-        details: joi.array().items(
-          joi.object().keys({
-            stop_location: joi.string().required(),
-            duration: joi.string().required(),
-          })
-        ),
-      })
+      joi
+        .object()
+        .keys({
+          title: joi.string().required(),
+          start_time: joi.string(),
+          end_time: joi.string(),
+          details: joi.array().items(
+            joi.object().keys({
+              stop_location: joi.string().required(),
+              duration: joi.string().required(),
+            })
+          ),
+        })
+        .optional()
     ),
   })
   .options({ allowUnknown: true });
