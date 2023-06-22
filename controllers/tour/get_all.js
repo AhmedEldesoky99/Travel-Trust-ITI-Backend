@@ -1,3 +1,4 @@
+const { isArray } = require("util");
 const {
   tourModel: Tour,
   CitiesModal: City,
@@ -10,21 +11,12 @@ exports.getAllTours = async (req, res, next) => {
     const { limit, city, minPrice, maxPrice, category, status, rate } =
       req.query;
     let stages = [{ $match: { status: "publish" } }];
-
-    if (city) {
-      const cityResult = await City.findById(+city);
-      if (!cityResult) {
-        throw errorHandler("city id not found");
-      }
-      stages = [...stages, { $match: { city: +city } }];
+    if (isArray(city)) {
+      stages = [...stages, { $match: { city: { $in: city } } }];
     }
 
-    if (category) {
-      const categoryResult = await Category.findById(+category);
-      if (!categoryResult) {
-        throw errorHandler("category id not found");
-      }
-      stages = [...stages, { $match: { category: +category } }];
+    if (isArray(category)) {
+      stages = [...stages, { $match: { category: { $in: category } } }];
     }
 
     if (minPrice) {
@@ -46,7 +38,7 @@ exports.getAllTours = async (req, res, next) => {
       stages = [...stages, { $limit: +limit }];
     }
     if (rate) {
-      stages = [...stages, { $match: { rate: +rate } }];
+      stages = [...stages, { $match: { rate: { $in: rate } } }];
     }
 
     const tours = await Tour.aggregate([
