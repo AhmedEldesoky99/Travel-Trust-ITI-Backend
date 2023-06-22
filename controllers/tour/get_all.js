@@ -4,12 +4,12 @@ const {
   CitiesModal: City,
   CategoryModel: Category,
 } = require("../../models");
-const { successHandler, errorHandler } = require("../../utils/responseHandler");
 
 exports.getAllTours = async (req, res, next) => {
   try {
-    const { limit, city, minPrice, maxPrice, category, status, rate } =
-      req.query;
+    const { limit } = req.query;
+    const { city, minPrice, maxPrice, category, rate } = req.body;
+
     let stages = [{ $match: { status: "publish" } }];
     if (isArray(city)) {
       stages = [...stages, { $match: { city: { $in: city } } }];
@@ -31,9 +31,7 @@ exports.getAllTours = async (req, res, next) => {
         { $match: { price_per_person: { $lte: +maxPrice } } },
       ];
     }
-    if (status) {
-      stages = [...stages, { $match: { status: status } }];
-    }
+
     if (limit) {
       stages = [...stages, { $limit: +limit }];
     }
