@@ -1,7 +1,7 @@
 const joi = require("joi");
 const { errorHandler } = require("../utils/responseHandler");
 
-const photoValidation = {
+const photoValidation = joi.object({
   highlight_photos: joi.array().items(
     joi
       .object()
@@ -20,7 +20,8 @@ const photoValidation = {
       })
       .required("food_photos is required")
   ),
-};
+});
+
 const validationObj = joi
   .object({
     title: joi.string().required(),
@@ -61,21 +62,22 @@ const validationObj = joi
   .options({ allowUnknown: true });
 
 const findItemInObj = (fileName, array) => {
-  return array.filter((item) => (item.name === fileName ? item : false));
+  return array?.filter((item) => (item.name === fileName ? item : false));
 };
 
 const ValidTour = async (req, res, next) => {
   try {
-    console.log("req.files", req.files);
+    console.log("req.files", req.files.length);
     console.log("req.body", req.body);
+
     const obj = {
       ...req.body,
       highlight_photos: findItemInObj("highlight_photos", req.files),
       food_photos: findItemInObj("food_photos", req.files),
     };
 
-    if (obj.highlight_photos || obj.food_photos) {
-      await { ...validationObj, ...photoValidation }.validateAsync(obj);
+    if (obj.highlight_photos[0]?.name || obj.food_photos[0]?.name) {
+      await validationObj.concat(photoValidation).validateAsync(obj);
     } else {
       await validationObj.validateAsync(obj);
     }
