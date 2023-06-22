@@ -22,6 +22,8 @@ const { responseFactory } = require("../../controllers/factory/factory");
 
 const tourRouter = express.Router();
 
+tourRouter.post("/search", getAllTours, responseFactory);
+
 tourRouter.post(
   "/",
   protect,
@@ -39,10 +41,7 @@ tourRouter.patch(
   updateTour,
   getOneTour
 );
-
 tourRouter.delete("/:id", protect, deleteOneTour);
-
-tourRouter.get("/", getAllTours, responseFactory);
 tourRouter.get("/statistics", getAllTours, ToursStats, responseFactory);
 tourRouter.get("/sales", getToursOnSale);
 tourRouter.get("/:id", getOneTour);
