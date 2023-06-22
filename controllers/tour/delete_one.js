@@ -1,4 +1,4 @@
-const { tourModel: Tour } = require("../../models");
+const { tourModel: Tour, commentModel: Comment } = require("../../models");
 const { successHandler, errorHandler } = require("../../utils/responseHandler");
 
 exports.deleteOneTour = async (req, res, next) => {
@@ -11,6 +11,7 @@ exports.deleteOneTour = async (req, res, next) => {
       throw errorHandler("unauthorized", 401);
     }
     await Tour.findByIdAndRemove(req.params.id);
+    // await Comment.deleteMany({tour:null})
     successHandler(res, undefined, undefined, "tour deleted successfully");
   } catch (err) {
     next(err);

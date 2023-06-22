@@ -9,40 +9,12 @@ exports.getAllTours = async (req, res, next) => {
   try {
     const { limit } = req.query;
 
-    let stages = [{ $match: { status: "publish" } }, { $limit: +limit }];
+    let stages = [
+      { $match: { status: "publish" } },
+      { $limit: +limit || undefined },
+    ];
 
-    const tours = await Tour.aggregate([
-      ...stages,
-      {
-        $lookup: {
-          from: "users",
-          localField: "organizer",
-          foreignField: "_id",
-          as: "organizer",
-        },
-      },
-      { $unwind: "$organizer" },
-
-      {
-        $lookup: {
-          from: "cities",
-          localField: "city",
-          foreignField: "_id",
-          as: "city",
-        },
-      },
-      { $unwind: "$city" },
-
-      {
-        $lookup: {
-          from: "categories",
-          localField: "category",
-          foreignField: "_id",
-          as: "category",
-        },
-      },
-      // { $unwind: "$category" },
-    ]);
+    const tours = await Tour.find({}).limit(+limit);
 
     req.Result = {
       data: tours,
