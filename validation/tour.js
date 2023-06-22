@@ -42,20 +42,17 @@ const validationObj = joi
     ),
     sale: joi.number().min(1).max(99).optional(),
     plan: joi.array().items(
-      joi
-        .object()
-        .keys({
-          title: joi.string().required(),
-          start_time: joi.string(),
-          end_time: joi.string(),
-          details: joi.array().items(
-            joi.object().keys({
-              stop_location: joi.string().required(),
-              duration: joi.string().required(),
-            })
-          ),
-        })
-        .optional()
+      joi.object().keys({
+        title: joi.string().required(),
+        start_time: joi.string(),
+        end_time: joi.string(),
+        details: joi.array().items(
+          joi.object().keys({
+            stop_location: joi.string().required(),
+            duration: joi.string().required(),
+          })
+        ),
+      })
     ),
   })
   .options({ allowUnknown: true });
