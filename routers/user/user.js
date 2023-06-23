@@ -12,6 +12,7 @@ const {
 } = require("../../middlewares/upload-img/upload-img");
 const { validIdentity } = require("../../validation/uploadIdentity");
 const { uploadIdentity } = require("../../controllers/users/uploadIdentity");
+const { updateProfileValidator } = require("../../validation/user/updateUser");
 
 const userRouter = express.Router();
 
@@ -24,5 +25,12 @@ userRouter.post(
   validIdentity,
   uploadIdentity
 );
-userRouter.patch("/", uploadAnyFiles(), resizeTourImage, protect, updateUser);
+userRouter.patch(
+  "/",
+  uploadAnyFiles(),
+  resizeTourImage,
+  updateProfileValidator,
+  protect,
+  updateUser
+);
 module.exports = userRouter;

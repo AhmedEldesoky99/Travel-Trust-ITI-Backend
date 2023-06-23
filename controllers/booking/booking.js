@@ -14,32 +14,30 @@ exports.getCheckoutSession = async (req, res, next) => {
     if (!cart) {
       throw errorHandler("cart id not found", 400);
     }
-    if (cart.total_money === 0 || cart.tours.length) {
+    if (cart.total_money === 0 || !cart.tours.length) {
       throw errorHandler("cart can not be empty", 400);
     }
 
-    const session = await stripe.checkout.sessions
-      .create({
-        mode: "payment",
-        success_url: `${process.env.FRONTEND_DOMAIN}/payment-sucess`,
-        cancel_url: `${process.env.FRONTEND_DOMAIN}/payment-failed`,
-        client_reference_id: req.params.cartID,
-        customer_email: cart.user.email,
-        line_items: [
-          {
-            price_data: {
-              currency: "usd",
-              unit_amount: cart.total_money,
-              product_data: {
-                name: `tours`,
-                description: "welcome in Travel",
-              },
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      success_url: `${process.env.FRONTEND_DOMAIN}/payment-sucess`,
+      cancel_url: `${process.env.FRONTEND_DOMAIN}/payment-failed`,
+      client_reference_id: req.params.cartID,
+      customer_email: cart.user.email,
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            unit_amount: cart.total_money,
+            product_data: {
+              name: `tours`,
+              description: "welcome in Travel",
             },
-            quantity: cart.tours.length,
           },
-        ],
-      })
-      .then(console.log);
+          quantity: cart.tours.length,
+        },
+      ],
+    });
 
     successHandler(res, session, "start payment session");
   } catch (err) {

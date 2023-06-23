@@ -3,6 +3,7 @@ const {
   tourModel: Tour,
   CitiesModal: City,
   CategoryModel: Category,
+  userModel,
 } = require("../../models");
 
 exports.getAllTours = async (req, res, next) => {

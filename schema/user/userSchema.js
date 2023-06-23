@@ -7,7 +7,7 @@ const autoIncrement = require("mongoose-auto-increment");
 
 const userSchema = new Schema(
   {
-    username: { type: String, trim: true, unique: true },
+    username: { type: String, trim: true },
     phone: { type: String, trim: true },
     cart: {
       type: Number,
@@ -32,7 +32,11 @@ const userSchema = new Schema(
       trim: true,
       select: false,
     },
-    ssn: { type: String, trim: true, unique: true },
+    ssn: {
+      type: String,
+      trim: true,
+      unique: true,
+    },
     photo: {
       type: Array,
       default: null,
@@ -53,6 +57,7 @@ const userSchema = new Schema(
       ref: "City",
       autopopulate: true,
     },
+    job_profile: { type: String, trim: true },
     visited_tours: [
       { type: Number, ref: "Tour", autopopulate: true, default: null },
     ],

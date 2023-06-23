@@ -1,3 +1,4 @@
+const { isArray } = require("util");
 const { uploadCloud } = require("../../middlewares/cloudinary/cloudinary");
 const {
   sharpHandler,
@@ -13,28 +14,44 @@ exports.updateUser = async (req, res, next) => {
     if (getUser.id !== req.userID) {
       throw errorHandler("unauthorized", 401);
     }
-
-    await Promise.all(
-      req.files?.map(async ({ file, name }) => {
-        const uploadedFile = await uploadCloud(file);
-        req.body[name] = [{ ...uploadedFile }];
-      })
-    );
-
-    await Promise.all(
-      [...req.body.governorate_expertise].map(async (city, i) => {
-        const result = await City.findById(city);
-        if (!result) {
-          throw errorHandler("governorate_expertise of " + i + " is not valid");
-        }
-      })
-    );
-
-    const response = await userModel.findByIdAndUpdate(req.userID, {
-      ...req.body,
+    let checkUniqueName = await userModel.find({
+      username: req.body?.username,
     });
+    checkUniqueName = checkUniqueName.filter(
+      (item) => +item.id !== +req.userID
+    );
 
-    console.log(req.body.governorate_expertise);
+    if (checkUniqueName.length !== 0) {
+      throw errorHandler("username is not available", 400);
+    }
+
+    if (req.files.length > 0)
+      await Promise.all(
+        req.files?.map(async ({ file, name }) => {
+          const uploadedFile = await uploadCloud(file);
+          req.body[name] = [{ ...uploadedFile }];
+        })
+      );
+
+    if (isArray(req.body?.governorate_expertise))
+      await Promise.all(
+        req.body.governorate_expertise.map(async (city, i) => {
+          const result = await City.findById(city);
+          if (!result) {
+            throw errorHandler(
+              "governorate_expertise of " + i + " is not valid"
+            );
+          }
+        })
+      );
+
+    await userModel.updateOne(
+      { id: req.userID },
+      {
+        ...req.body,
+      }
+    );
+    const response = await userModel.findById(req.user.id);
     successHandler(res, response, "user updated successfully");
   } catch (err) {
     next(err);
