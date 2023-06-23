@@ -3,10 +3,13 @@ const {
   tourModel: Tour,
 } = require("../../models/index");
 const { errorHandler, successHandler } = require("../../utils/responseHandler");
+const { isUser } = require("../auth/auth");
 const { calcRate } = require("../tour/helper");
 
 exports.createComment = async (req, res, next) => {
   try {
+    isUser(next, req.userID);
+
     const { tourID } = req.params;
 
     const tour = await Tour.findById(tourID);

@@ -56,18 +56,28 @@ const isOrganizer = async (next, id) => {
   try {
     const user = await userModel.findById(id);
     if (user.role !== "organizer" || !user.verified) {
-      throw errorHandler("verified organizer only can create tour", 400);
+      throw errorHandler("restricted to verified organizer", 400);
     }
   } catch (err) {
     next(err);
   }
 };
 
+const isUser = async (next, id) => {
+  try {
+    const user = await userModel.findById(id);
+    if (user.role !== "user") {
+      throw errorHandler("restricted to user", 400);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
 const isAdmin = async (next, id) => {
   try {
     const admin = await userModel.findById(+id);
     if (admin.role !== "admin") {
-      throw errorHandler("organizers allowed only for admins", 400);
+      throw errorHandler("restricted to admin", 400);
     }
   } catch (err) {
     next(err);
@@ -81,4 +91,5 @@ module.exports = {
   comparePassword,
   isOrganizer,
   isAdmin,
+  isUser,
 };
