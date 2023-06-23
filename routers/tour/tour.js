@@ -39,8 +39,7 @@ tourRouter.patch(
   uploadAnyFiles(),
   resizeTourImage,
   ValidTour,
-  updateTour,
-  getOneTour
+  updateTour
 );
 
 tourRouter.delete("/:id", protect, deleteOneTour);
