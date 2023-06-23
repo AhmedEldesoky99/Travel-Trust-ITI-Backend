@@ -18,26 +18,28 @@ exports.getCheckoutSession = async (req, res, next) => {
       throw errorHandler("cart can not be empty", 400);
     }
 
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      success_url: `${process.env.FRONTEND_DOMAIN}/payment-sucess`,
-      cancel_url: `${process.env.FRONTEND_DOMAIN}/payment-failed`,
-      client_reference_id: req.params.cartID,
-      customer_email: cart.user.email,
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            unit_amount: cart.total_money,
-            product_data: {
-              name: `tours`,
-              description: "welcome in Travel",
+    const session = await stripe.checkout.sessions
+      .create({
+        mode: "payment",
+        success_url: `${process.env.FRONTEND_DOMAIN}/payment-sucess`,
+        cancel_url: `${process.env.FRONTEND_DOMAIN}/payment-failed`,
+        client_reference_id: req.params.cartID,
+        customer_email: cart.user.email,
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              unit_amount: cart.total_money,
+              product_data: {
+                name: `tours`,
+                description: "welcome in Travel",
+              },
             },
+            quantity: cart.tours.length,
           },
-          quantity: cart.tours.length,
-        },
-      ],
-    });
+        ],
+      })
+      .then(console.log);
 
     successHandler(res, session, "start payment session");
   } catch (err) {
