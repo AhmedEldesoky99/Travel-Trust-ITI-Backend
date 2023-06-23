@@ -8,11 +8,13 @@ exports.toggleFavorite = async (req, res, next) => {
       throw errorHandler("tour not found", 404);
     }
     const user = await User.findById(req.userID);
-    console.log(req.userID);
     if (!user) {
       throw errorHandler("user not found", 404);
     }
-    let favTours = [...user.favorite_tours];
+
+    console.log("user", user);
+
+    let favTours = user.favorite_tours.map((item) => +item.id);
     let mode = "";
     if (!favTours.includes(+req.params.tourID)) {
       mode = "add";
