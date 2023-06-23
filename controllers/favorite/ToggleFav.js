@@ -17,10 +17,10 @@ exports.toggleFavorite = async (req, res, next) => {
     let favTours = user.favorite_tours.map((item) => +item.id);
     let mode = "";
     if (!favTours.includes(+req.params.tourID)) {
-      mode = "add";
+      mode = "add to";
       favTours.push(+req.params.tourID);
     } else {
-      mode = "remove";
+      mode = "remove from";
       favTours = favTours.filter((item) => item !== +req.params.tourID);
     }
     console.log(favTours, "favTours");
@@ -32,7 +32,7 @@ exports.toggleFavorite = async (req, res, next) => {
       res,
       undefined,
       undefined,
-      `tour was ${mode} to favorites successfully`
+      `tour was ${mode} favorites successfully`
     );
   } catch (err) {
     next(err);
