@@ -10,10 +10,19 @@ const {
   uploadAnyFiles,
   resizeTourImage,
 } = require("../../middlewares/upload-img/upload-img");
+const { validIdentity } = require("../../validation/uploadIdentity");
+const { uploadIdentity } = require("../../controllers/users/uploadIdentity");
 
 const userRouter = express.Router();
 
 userRouter.get("/:id", getOneUser);
+userRouter.post(
+  "/upload-identity",
+  protect,
+  uploadAnyFiles(),
+  resizeTourImage,
+  validIdentity,
+  uploadIdentity
+);
 userRouter.patch("/", uploadAnyFiles(), resizeTourImage, protect, updateUser);
-
 module.exports = userRouter;

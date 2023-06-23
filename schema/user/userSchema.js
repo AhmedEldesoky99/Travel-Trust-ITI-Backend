@@ -16,8 +16,11 @@ const userSchema = new Schema(
     },
     languages: {
       type: Array,
+      default: null,
     },
-    governorate_expertise: [{ type: Number, ref: "City", autopopulate: true }],
+    governorate_expertise: [
+      { type: Number, ref: "City", autopopulate: true, default: null },
+    ],
     email: {
       type: String,
       trim: true,
@@ -38,12 +41,11 @@ const userSchema = new Schema(
       type: Array,
       default: null,
     },
-    civil_photos: [
-      {
-        type: Array,
-        default: null,
-      },
-    ],
+    civil_photos: {
+      front: { type: Array, default: null, select: false },
+      back: { type: Array, default: null, select: false },
+    },
+
     role: { type: String, trim: true },
     bio: String,
     city: {
@@ -51,18 +53,21 @@ const userSchema = new Schema(
       ref: "City",
       autopopulate: true,
     },
-    visited_tours: Array,
+    visited_tours: [
+      { type: Number, ref: "Tour", autopopulate: true, default: null },
+    ],
     favorite_tours: [
       {
         type: Number,
         ref: "Tour",
         autopopulate: true,
+        default: null,
       },
     ],
 
     verified: {
       type: Boolean,
-      default: false,
+      default: null,
     },
     cash: Number,
     currency: { type: String, trim: true },
