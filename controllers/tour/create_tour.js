@@ -20,22 +20,30 @@ exports.createTour = async (req, res, next) => {
     if (!category) {
       throw errorHandler("category id is invalid", 400);
     }
+    let fileConsumer = { highlight_photos: [], food_photos: [] };
 
-    await Promise.all(
-      req.files.map(async (item) => {
-        console.log(item.file);
-        const uploadedFile = await uploadCloudBB(item.file);
-        // console.log(uploadedFile);
-        req.body[item.name] = [{ ...uploadedFile }];
+    if (req.files.length > 0) {
+      await Promise.all(
+        req.files.map(async (item) => {
+          console.log(item.file);
+          const uploadedFile = await uploadCloudBB(item.file);
 
-        //check if plan image
-        const isPlanImage = isFinite(item.name[5]);
-        if (isPlanImage) {
-          // console.log(item.name[5]);
-          req.body.plan[item.name[5]].image = [{ ...uploadedFile }];
-        }
-      })
-    );
+          if (item.name === "highlight_photos") {
+            fileConsumer.highlight_photos.push(uploadedFile);
+          }
+          if (item.name === "food_photos") {
+            fileConsumer.food_photos.push(uploadedFile);
+          }
+
+          //check if plan image
+          const isPlanImage = isFinite(item.name[5]);
+          if (isPlanImage) {
+            // console.log(item.name[5]);
+            req.body.plan[item.name[5]].image = [{ ...uploadedFile }];
+          }
+        })
+      );
+    }
 
     const noToursOfCity = await Tour.aggregate([
       { $group: { _id: "$city", tours_number: { $sum: 1 } } },
@@ -51,6 +59,11 @@ exports.createTour = async (req, res, next) => {
     const tour = new Tour({
       organizer: req.userID,
       ...req.body,
+      highlight_photos: [
+        ...getTour.highlight_photos,
+        ...fileConsumer.highlight_photos,
+      ],
+      food_photos: [...getTour.food_photos, ...fileConsumer.food_photos],
     });
     const createdTour = await Tour.create(tour);
 
