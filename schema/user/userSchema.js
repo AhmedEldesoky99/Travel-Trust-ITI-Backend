@@ -46,8 +46,8 @@ const userSchema = new Schema(
       default: null,
     },
     civil_photos: {
-      front: { type: Array, default: null, select: false },
-      back: { type: Array, default: null, select: false },
+      front: { type: Array, default: null },
+      back: { type: Array, default: null },
     },
 
     role: { type: String, trim: true },
