@@ -27,12 +27,19 @@ exports.updateTour = async (req, res, next) => {
     if (!category) {
       throw errorHandler("category id is invalid", 400);
     }
-
+    let fileConsumer = { highlight_photos: [], food_photos: [] };
     if (req.files.length > 0) {
       await Promise.all(
         req.files?.map(async (item) => {
           const uploadedFile = await uploadCloud(item.file);
-          req.body[item.name] = [{ ...uploadedFile }];
+
+          if (item.name === "highlight_photos") {
+            fileConsumer.highlight_photos.push(uploadedFile);
+          }
+          if (item.name === "food_photos") {
+            fileConsumer.food_photos.push(uploadedFile);
+          }
+
           //check if plan image
           const isPlanImage = isFinite(item.name[5]);
           if (isPlanImage)
@@ -41,7 +48,14 @@ exports.updateTour = async (req, res, next) => {
       );
     }
 
-    await Tour.findByIdAndUpdate(id, { ...req.body });
+    await Tour.findByIdAndUpdate(id, {
+      ...req.body,
+      highlight_photos: [
+        ...getTour.highlight_photos,
+        ...fileConsumer.highlight_photos,
+      ],
+      food_photos: [...getTour.food_photos, ...fileConsumer.food_photos],
+    });
 
     const result = await Tour.findById(id);
 
