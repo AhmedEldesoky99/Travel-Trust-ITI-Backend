@@ -6,9 +6,14 @@ exports.verifyOrganizer = async (req, res, next) => {
   try {
     isAdmin(next, req.userID);
 
-    await User.findByIdAndUpdate(req.userID, { verified: true });
-    const organizer = await User.findById(req.userID).select("civil_photos");
-    successHandler(res, organizer, `organizer verified Successfully`);
+    await User.findByIdAndUpdate(req.params.organizerID, { verified: true });
+
+    successHandler(
+      res,
+      undefined,
+      undefined,
+      `organizer verified Successfully`
+    );
   } catch (err) {
     next(err);
   }
