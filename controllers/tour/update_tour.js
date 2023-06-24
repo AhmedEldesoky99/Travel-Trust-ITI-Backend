@@ -47,7 +47,7 @@ exports.updateTour = async (req, res, next) => {
             req.body.plan[item.name[5]].image = [{ ...uploadedFile }];
         })
       );
-
+      console.log(highlight_photos, req.body["highlight_photos"]);
       if (req.body["highlight_photos"])
         tour = {
           ...tour,
@@ -56,6 +56,7 @@ exports.updateTour = async (req, res, next) => {
             ...req.body["highlight_photos"],
           ],
         };
+      console.log(food_photos, req.body["food_photos"]);
 
       if (req.body["food_photos"])
         tour = {
