@@ -28,7 +28,8 @@ exports.updateTour = async (req, res, next) => {
       throw errorHandler("category id is invalid", 400);
     }
 
-    if (req.files.length > 0)
+    let tour;
+    if (req.files.length > 0) {
       await Promise.all(
         req.files?.map(async (item) => {
           const uploadedFile = await uploadCloud(item.file);
@@ -42,14 +43,20 @@ exports.updateTour = async (req, res, next) => {
         })
       );
 
-    const tour = {
+      tour = {
+        organizer: req.userID,
+        ...req.body,
+        highlight_photos: [
+          ...getTour.highlight_photos,
+          ...req.body?.highlight_photos,
+        ],
+        food_photos: [...getTour.food_photos, ...req.body?.food_photos],
+      };
+    }
+
+    tour = {
       organizer: req.userID,
       ...req.body,
-      highlight_photos: [
-        ...getTour.highlight_photos,
-        ...req.body?.highlight_photos,
-      ],
-      food_photos: [...getTour.food_photos, ...req.body?.food_photos],
     };
 
     await Tour.findByIdAndUpdate(id, { ...tour });

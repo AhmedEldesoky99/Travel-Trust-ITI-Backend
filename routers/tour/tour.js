@@ -38,7 +38,7 @@ tourRouter.patch(
   protect,
   uploadAnyFiles(),
   resizeTourImage,
-  // ValidTour,
+  ValidTour,
   updateTour
 );
 
