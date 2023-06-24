@@ -2,7 +2,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const { errorHandler } = require("../../utils/responseHandler");
 
-exports.sharpHandler = async (buffer, id) => {
+exports.sharpHandler = async (buffer, originalname, id) => {
   const uniqueNumber = Date.now();
   await sharp(buffer)
     .resize({
@@ -13,8 +13,8 @@ exports.sharpHandler = async (buffer, id) => {
     .flatten({ background: "#fff" })
     .toFormat("jpeg")
     .webp({ quality: 70 })
-    .toFile(`uploads/user-${id}-${uniqueNumber}.jpeg`);
-  return `uploads/user-${id}-${uniqueNumber}.jpeg`;
+    .toFile(`uploads/user-${id}-${originalname + uniqueNumber}.jpeg`);
+  return `uploads/user-${id}-${originalname + uniqueNumber}.jpeg`;
 };
 
 //file
@@ -41,7 +41,7 @@ exports.resizeTourImage = async (req, res, next) => {
   req.files = await Promise.all(
     req.files.map(async (item) => ({
       name: item.fieldname,
-      file: await this.sharpHandler(item.buffer, req.userID),
+      file: await this.sharpHandler(item.buffer, item.originalname, req.userID),
     }))
   );
   next();
