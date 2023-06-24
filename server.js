@@ -78,9 +78,9 @@ mongoose.connect(process.env.DATABASE).then((_) => {
   console.log("database is connected successfully");
 });
 
-app.use((err, req, res, next) => {
+app.use((error, req, res, next) => {
   console.error("\n<<<<<<<<<<<<<<Error>>>>>>>>>>>>>>\n", err);
-  res.status(err.status || 500).send(err.response);
+  res.status(err.status || 500).json({ error });
 });
 
 app.listen(port, () => console.log(`Server is listening on port : ${port}`));
