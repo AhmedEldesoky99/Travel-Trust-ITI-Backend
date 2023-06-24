@@ -13,17 +13,17 @@ exports.uploadIdentity = async (req, res, next) => {
       throw errorHandler("restricted to  organizer", 400);
     }
 
-    let civil_photos = { front_civil_photo: [], back_civil_photo: [] };
+    let civil_photos = { front: [], back: [] };
 
     await Promise.all(
       req.files.map(async (item) => {
         const uploadedFile = await uploadCloudBB(item.file);
 
         if (item.name === "front_civil_photo")
-          civil_photos.front_civil_photo.push(uploadedFile);
+          civil_photos.front.push(uploadedFile);
 
         if (item.name === "back_civil_photo")
-          civil_photos.back_civil_photo.push(uploadedFile);
+          civil_photos.back.push(uploadedFile);
       })
     );
 
