@@ -58,7 +58,11 @@ exports.updateTour = async (req, res, next) => {
             ...photos?.highlight_photos,
           ],
         };
-      console.log("body photos", food_photos, highlight_photos);
+      console.log(
+        "body photos",
+        req.body?.food_photos,
+        req.body?.highlight_photos
+      );
 
       if (photos?.food_photos)
         tour = {
