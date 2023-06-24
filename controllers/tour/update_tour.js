@@ -52,7 +52,6 @@ exports.updateTour = async (req, res, next) => {
       food_photos: [...getTour.food_photos, ...req.body?.food_photos],
     };
 
-    console.log(tour);
     await Tour.findByIdAndUpdate(id, { ...tour });
 
     const result = await Tour.findById(id);
