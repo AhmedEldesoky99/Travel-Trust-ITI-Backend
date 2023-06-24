@@ -28,50 +28,20 @@ exports.updateTour = async (req, res, next) => {
       throw errorHandler("category id is invalid", 400);
     }
 
-    let tour = {
-      organizer: req.userID,
-      highlight_photos: getTour.highlight_photos,
-      food_photos: getTour.food_photos,
-    };
-
     if (req.files.length > 0) {
-      let photos = {};
       await Promise.all(
         req.files?.map(async (item) => {
           const uploadedFile = await uploadCloud(item.file);
-
           req.body[item.name] = [{ ...uploadedFile }];
-          photos[item.name] = [{ ...uploadedFile }];
           //check if plan image
           const isPlanImage = isFinite(item.name[5]);
           if (isPlanImage)
             req.body.plan[item.name[5]].image = [{ ...uploadedFile }];
         })
       );
-      console.log("photos", photos);
-
-      if (photos?.highlight_photos)
-        tour = {
-          ...tour,
-          highlight_photos: [
-            ...tour.highlight_photos,
-            ...photos?.highlight_photos,
-          ],
-        };
-      console.log(
-        "body photos",
-        req.body?.food_photos,
-        req.body?.highlight_photos
-      );
-
-      if (photos?.food_photos)
-        tour = {
-          ...tour,
-          food_photos: [...tour.food_photos, ...photos?.food_photos],
-        };
     }
 
-    await Tour.findByIdAndUpdate(id, { ...req.body, ...tour });
+    await Tour.findByIdAndUpdate(id, { ...req.body });
 
     const result = await Tour.findById(id);
 
