@@ -60,7 +60,7 @@ exports.updateTour = async (req, res, next) => {
       if (req.body["food_photos"])
         tour = {
           ...tour,
-          food_photos: [...tour.food_photos, ...req.body["highlight_photos"]],
+          food_photos: [...tour.food_photos, ...req.body["food_photos"]],
         };
     }
 
