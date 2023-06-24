@@ -13,24 +13,25 @@ exports.uploadIdentity = async (req, res, next) => {
       throw errorHandler("restricted to  organizer", 400);
     }
 
-    let civil_photos = {};
+    let civil_photos = { front_civil_photo: [], back_civil_photo: [] };
+
     await Promise.all(
       req.files.map(async (item) => {
         const uploadedFile = await uploadCloudBB(item.file);
-        civil_photos[item.name] = [{ ...uploadedFile }];
+
+        req.body[item.name] = [uploadedFile];
+
+        // if ((item.name = "front_civil_photo"))
+        //   civil_photos.front_civil_photo.push(uploadedFile);
+
+        // if ((item.name = "back_civil_photo"))
+        //   civil_photos.back_civil_photo.push(uploadedFile);
       })
     );
-    console.log(civil_photos);
 
-    await User.updateOne(
-      { id: req.userID },
-      {
-        $set: {
-          "civil_photos.front": civil_photos["front_civil_photo:"],
-          "civil_photos.back": civil_photos["back_civil_photo"],
-        },
-      }
-    ).select("civil_photos");
+    await User.findByIdAndUpdate(req.userID, {
+      ...req.body,
+    });
 
     const user = await User.findById(req.userID).select("civil_photos");
 
