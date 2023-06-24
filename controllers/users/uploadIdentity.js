@@ -19,18 +19,16 @@ exports.uploadIdentity = async (req, res, next) => {
       req.files.map(async (item) => {
         const uploadedFile = await uploadCloudBB(item.file);
 
-        req.body[item.name] = [uploadedFile];
+        if ((item.name = "front_civil_photo"))
+          civil_photos.front_civil_photo.push(uploadedFile);
 
-        // if ((item.name = "front_civil_photo"))
-        //   civil_photos.front_civil_photo.push(uploadedFile);
-
-        // if ((item.name = "back_civil_photo"))
-        //   civil_photos.back_civil_photo.push(uploadedFile);
+        if ((item.name = "back_civil_photo"))
+          civil_photos.back_civil_photo.push(uploadedFile);
       })
     );
 
     await User.findByIdAndUpdate(req.userID, {
-      ...req.body,
+      civil_photos,
     });
 
     const user = await User.findById(req.userID).select("civil_photos");

@@ -10,14 +10,14 @@ exports.calcRate = (comments) => {
 };
 
 exports.toursStats = (data) => {
-  let minPrice,
-    maxPrice,
+  let minPrice = 0,
+    maxPrice = 0,
     categories = {},
     cities = {},
     rates = {};
   data.map((tour) => {
-    minPrice = data[0].price_per_person;
-    maxPrice = data[0].price_per_person;
+    minPrice = 0;
+    maxPrice = 0;
 
     if (tour.price_per_person > maxPrice) {
       maxPrice = tour.price_per_person;
