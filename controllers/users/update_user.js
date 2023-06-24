@@ -45,12 +45,9 @@ exports.updateUser = async (req, res, next) => {
         })
       );
 
-    await userModel.updateOne(
-      { id: req.userID },
-      {
-        ...req.body,
-      }
-    );
+    await userModel.findByIdAndUpdate(req.userID, {
+      ...req.body,
+    });
     const response = await userModel.findById(req.user.id);
     successHandler(res, response, "user updated successfully");
   } catch (err) {

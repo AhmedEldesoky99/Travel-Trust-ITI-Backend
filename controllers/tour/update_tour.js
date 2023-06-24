@@ -48,14 +48,20 @@ exports.updateTour = async (req, res, next) => {
         })
       );
 
-      if (req.body?.highlight_photos)
-        tour.highlight_photos = [
-          ...tour.highlight_photos,
-          ...req.body?.highlight_photos,
-        ];
+      if (req.body["highlight_photos"])
+        tour = {
+          ...tour,
+          highlight_photos: [
+            ...tour.highlight_photos,
+            ...req.body["highlight_photos"],
+          ],
+        };
 
-      if (req.body?.food_photos)
-        tour.food_photos = [...tour.food_photos, ...req.body?.food_photos];
+      if (req.body["food_photos"])
+        tour = {
+          ...tour,
+          food_photos: [...tour.food_photos, ...req.body["highlight_photos"]],
+        };
     }
 
     await Tour.findByIdAndUpdate(id, { ...req.body, ...tour });
