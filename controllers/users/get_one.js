@@ -15,9 +15,10 @@ exports.getOneUser = async (req, res, next) => {
     const { role } = user;
 
     if (role === "organizer") {
-      const tours = await Tour.find({ organizer: req.params.id }).select(
-        "civil_photos"
-      );
+      const tours = await Tour.find({
+        organizer: req.params.id,
+        status: "publish",
+      });
       result = { ...result, stats: toursStats(tours) };
     }
 

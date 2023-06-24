@@ -16,10 +16,10 @@ exports.toursStats = (data) => {
     cities = {},
     rates = {};
   data.map((tour) => {
-    minPrice = 0;
-    maxPrice = 0;
+    minPrice = data[0].price_per_person;
+    maxPrice = data[0].price_per_person;
 
-    if (tour.price_per_person > maxPrice) {
+    if (tour.price_per_person >= maxPrice) {
       maxPrice = tour.price_per_person;
     } else {
       minPrice = tour.price_per_person;
