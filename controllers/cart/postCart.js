@@ -26,18 +26,20 @@ exports.addToCart = async (req, res, next) => {
         tours: tourID,
         total_money,
         reservation_number: tour.reservation_number + subscriber_number,
-        tour_details: { tour_id: tourID, money: total_money },
+        tour_details: {
+          tour_id: tourID,
+          money: total_money,
+          subscriber_number,
+        },
       });
 
       createdCart = await CartModel.create(Cart);
-      console.log("33");
     } else {
       total_money =
         +subscriber_number * +tour.price_per_person + cart.total_money;
       let tours;
 
       const toursIDs = cart.tours.map((item) => +item.id);
-      console.log(toursIDs, "toursIDs");
       if (toursIDs.includes(+tourID)) {
         throw errorHandler("tour is already in cart", 400);
       } else {
@@ -51,6 +53,7 @@ exports.addToCart = async (req, res, next) => {
           ...cart.tour_details,
           {
             tour_id: tourID,
+            subscriber_number,
             money: +subscriber_number * +tour.price_per_person,
           },
         ],
