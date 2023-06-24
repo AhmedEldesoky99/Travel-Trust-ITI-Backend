@@ -76,11 +76,6 @@ const userSchema = new Schema(
     },
     cash: Number,
     currency: { type: String, trim: true },
-    created_at: {
-      type: Date,
-      default: Date.now(),
-      select: false,
-    },
   },
   { timestamps: true },
 

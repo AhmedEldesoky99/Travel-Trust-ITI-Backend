@@ -6,10 +6,9 @@ exports.getAllOrganizers = async (req, res, next) => {
   try {
     isAdmin(next, req.userID);
 
-    const users = await User.find({ role: "organizer" })
-      .limit(req.params.limit)
-      .select("civil_photos");
-
+    const users = await User.find({ role: "organizer" }).limit(
+      req.params.limit
+    );
     successHandler(res, users, users.length);
   } catch (err) {
     next(err);
