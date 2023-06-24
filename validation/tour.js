@@ -76,7 +76,7 @@ const ValidTour = async (req, res, next) => {
       food_photos: findItemInObj("food_photos", req.files),
     };
 
-    if (obj.highlight_photos[0]?.name || obj.food_photos[0]?.name) {
+    if (obj.highlight_photos[0]?.name && obj.food_photos[0]?.name) {
       await validationObj.concat(photoValidation).validateAsync(obj);
     } else {
       await validationObj.validateAsync(obj);

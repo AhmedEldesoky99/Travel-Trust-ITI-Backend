@@ -59,11 +59,8 @@ exports.createTour = async (req, res, next) => {
     const tour = new Tour({
       organizer: req.userID,
       ...req.body,
-      highlight_photos: [
-        ...getTour.highlight_photos,
-        ...fileConsumer.highlight_photos,
-      ],
-      food_photos: [...getTour.food_photos, ...fileConsumer.food_photos],
+      highlight_photos: [...fileConsumer.highlight_photos],
+      food_photos: [...fileConsumer.food_photos],
     });
     const createdTour = await Tour.create(tour);
 
