@@ -19,10 +19,10 @@ exports.uploadIdentity = async (req, res, next) => {
       req.files.map(async (item) => {
         const uploadedFile = await uploadCloudBB(item.file);
 
-        if ((item.name = "front_civil_photo"))
+        if (item.name === "front_civil_photo")
           civil_photos.front_civil_photo.push(uploadedFile);
 
-        if ((item.name = "back_civil_photo"))
+        if (item.name === "back_civil_photo")
           civil_photos.back_civil_photo.push(uploadedFile);
       })
     );
