@@ -35,33 +35,35 @@ exports.updateTour = async (req, res, next) => {
     };
 
     if (req.files.length > 0) {
+      let photos = {};
       await Promise.all(
         req.files?.map(async (item) => {
           const uploadedFile = await uploadCloud(item.file);
 
           req.body[item.name] = [{ ...uploadedFile }];
-
+          photos[item.name] = [{ ...uploadedFile }];
           //check if plan image
           const isPlanImage = isFinite(item.name[5]);
           if (isPlanImage)
             req.body.plan[item.name[5]].image = [{ ...uploadedFile }];
         })
       );
-      console.log("highlight_photos", req.body?.highlight_photos);
-      if (req.body?.highlight_photos)
+      console.log("photos", photos);
+
+      if (photos?.highlight_photos)
         tour = {
           ...tour,
           highlight_photos: [
             ...tour.highlight_photos,
-            ...req.body.highlight_photos,
+            ...photos?.highlight_photos,
           ],
         };
-      console.log("food_photos", req.body?.food_photos);
+      console.log("body photos", food_photos, highlight_photos);
 
-      if (req.body?.food_photos)
+      if (photos?.food_photos)
         tour = {
           ...tour,
-          food_photos: [...tour.food_photos, ...req.body?.food_photos],
+          food_photos: [...tour.food_photos, ...photos?.food_photos],
         };
     }
 
