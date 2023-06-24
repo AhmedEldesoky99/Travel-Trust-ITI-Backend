@@ -6,9 +6,14 @@ const { isOrganizer } = require("../auth/auth");
 exports.uploadIdentity = async (req, res, next) => {
   try {
     console.log("uploadIdentity handler");
-    isOrganizer(next, req.userID);
 
-    civil_photos = {};
+    const organizer = await User.findById(req.userID);
+
+    if (organizer?.role !== "organizer") {
+      throw errorHandler("restricted to  organizer", 400);
+    }
+
+    let civil_photos = {};
     await Promise.all(
       req.files.map(async (item) => {
         const uploadedFile = await uploadCloudBB(item.file);
