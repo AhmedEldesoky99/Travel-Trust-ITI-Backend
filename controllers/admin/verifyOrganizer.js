@@ -6,8 +6,8 @@ exports.verifyOrganizer = async (req, res, next) => {
   try {
     isAdmin(next, req.userID);
 
-    await User.updateOne({ id: req.userID }, { $set: { verified: true } });
-    const organizer = await User.findById(req.userID);
+    await User.findByIdAndUpdate(req.userID, { verified: true });
+    const organizer = await User.findById(req.userID).select("civil_photos");
     successHandler(res, organizer, `organizer verified Successfully`);
   } catch (err) {
     next(err);
