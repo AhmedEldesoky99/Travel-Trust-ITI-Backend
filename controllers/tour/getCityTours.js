@@ -5,10 +5,11 @@ exports.getCityTours = async (req, res, next) => {
   try {
     const { limit } = req.query;
     const { cityID } = req.params;
+
     const tours = await Tour.find({ city: cityID })
       .limit(+limit)
       .populate("city");
-    const city = await City.findOne({ id: cityID });
+    const city = await City.findOne({ _id: cityID });
 
     console.log(city);
 
